@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FiHome } from 'react-icons/fi';
+import logo from '../assets/logo.jpeg';
 
 /**
  * Navbar Component
@@ -37,8 +38,8 @@ const Navbar = () => {
       
       {/* Logo on the left */}
       <a href="#home" className="flex items-center gap-3">
-        <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-3xl">
-          D
+        <div className="w-14 h-14 rounded-lg overflow-hidden border-2 border-indigo-500/50">
+          <img src={logo} alt="Dex" className="w-full h-full object-cover" />
         </div>
         <div className="text-[3.1rem] font-[700] text-white cursor-pointer transition-all duration-300 hover:text-indigo-400">
           Dex

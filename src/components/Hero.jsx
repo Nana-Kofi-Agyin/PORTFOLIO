@@ -1,16 +1,23 @@
 import { useState, useEffect } from 'react';
 import { FiGithub, FiLinkedin, FiTwitter, FiArrowRight, FiDownload } from 'react-icons/fi';
-import logo from '../assets/logo.jpeg';
+import profileImage from '../assets/My Image.jpg';
 
+/**
+ * Hero Component
+ * Landing section with animated typing effect, social links, and profile image
+ */
 const Hero = () => {
-  const [text, setText] = useState('');
-  const [titleIndex, setTitleIndex] = useState(0);
-  const [index, setIndex] = useState(0);
+  // State for typing animation
+  const [text, setText] = useState(''); // Current displayed text
+  const [titleIndex, setTitleIndex] = useState(0); // Current title being typed
+  const [index, setIndex] = useState(0); // Current character index
 
+  // Typing animation effect
   useEffect(() => {
     const titles = ['Full Stack Developer', 'UI/UX Designer', 'Software Engineer', 'Web Developer'];
     const fullText = titles[titleIndex];
     
+    // Type out characters one by one
     if (index < fullText.length) {
       const timeout = setTimeout(() => {
         setText(prev => prev + fullText[index]);
@@ -18,6 +25,7 @@ const Hero = () => {
       }, 100);
       return () => clearTimeout(timeout);
     } else {
+      // After completing a title, wait then move to next title
       const timeout = setTimeout(() => {
         setText('');
         setIndex(0);
@@ -29,24 +37,34 @@ const Hero = () => {
 
   return (
     <section id="home" className="min-h-screen flex justify-center items-center gap-20 px-[9%] pt-32 relative overflow-hidden">
+      {/* Background gradient orbs for visual effect */}
       <div className="absolute top-20 right-20 w-72 h-72 bg-indigo-500/30 rounded-full filter blur-[100px] animate-pulse"></div>
       <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-500/20 rounded-full filter blur-[100px] animate-pulse"></div>
       
+      {/* Main content section */}
       <div className="max-w-[60rem] z-10">
+        {/* Welcome badge */}
         <div className="inline-block px-4 py-2 bg-indigo-500/10 rounded-full border border-indigo-500/20 mb-6">
           <span className="text-[1.3rem] text-indigo-400 font-[500]">Welcome to my portfolio</span>
         </div>
+        
+        {/* Main heading with gradient text */}
         <h1 className="text-[5.6rem] font-[800] leading-[1.2] mb-6 bg-gradient-to-r from-white via-indigo-200 to-purple-200 bg-clip-text text-transparent">
           Hi, I'm Nana Kofi Agyin
         </h1>
+        
+        {/* Animated typing effect for job titles */}
         <h3 className="text-[3rem] my-6 text-gray-300">
           <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent font-[600] font-mono">&lt;{text}/&gt;<span className="text-indigo-400">|</span></span>
         </h3>
+        
+        {/* Description paragraph */}
         <p className="text-[1.7rem] leading-[1.9] my-8 text-gray-400 max-w-[55rem]">
           Crafting exceptional digital experiences through innovative web solutions. 
           Specialized in full-stack development with a passion for clean code and user-centric design.
         </p>
         
+        {/* Social media links */}
         <div className="flex gap-4 my-10">
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" 
              className="inline-flex justify-center items-center w-[4.5rem] h-[4.5rem] bg-white/5 border border-white/10 rounded-xl text-gray-400 transition-all duration-300 hover:bg-indigo-500/20 hover:text-indigo-400 hover:border-indigo-500/30 hover:-translate-y-1">
@@ -62,12 +80,15 @@ const Hero = () => {
           </a>
         </div>
         
+        {/* Call-to-action buttons */}
         <div className="flex flex-col gap-5 mt-12">
+          {/* Primary CTA - Contact button */}
           <a href="#contact" 
              className="px-10 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl transform hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/50 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer text-[1.5rem] font-[600]">
             <span>Let's Talk</span>
             <FiArrowRight className="w-5 h-5" />
           </a>
+          {/* Secondary CTA - Download CV */}
           <a href="/resume.pdf" target="_blank" rel="noopener noreferrer"
              className="border border-white/10 bg-white/5 backdrop-blur-sm text-gray-300 hover:border-indigo-500/50 hover:bg-indigo-500/10 hover:text-white px-10 py-4 rounded-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer text-[1.5rem] font-[600]">
             <FiDownload className="w-5 h-5" />
@@ -76,12 +97,15 @@ const Hero = () => {
         </div>
       </div>
       
+      {/* Profile image section - hidden on mobile, visible on large screens */}
       <div className="w-[40rem] h-[40rem] relative z-10 animate-float hidden lg:block">
         <div className="w-full h-full rounded-3xl bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-transparent backdrop-blur-sm border border-white/10 overflow-hidden shadow-2xl"
              style={{boxShadow: '0 20px 60px rgba(99, 102, 241, 0.3)'}}>
           <div className="relative w-full h-full">
+            {/* Animated glow effect behind image */}
             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 blur-3xl opacity-30 animate-pulse"></div>
-            <img src={logo} alt="Nana Kofi Agyin" className="relative w-full h-full object-cover" />
+            {/* Profile image */}
+            <img src={profileImage} alt="Nana Kofi Agyin" className="relative w-full h-full object-cover" />
           </div>
         </div>
       </div>
