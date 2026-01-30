@@ -1,6 +1,15 @@
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
+
 const About = () => {
+  const [ref, isVisible] = useScrollAnimation(0.1);
+
   return (
-    <section id="about" className="min-h-screen bg-[#1a1a2e] px-[9%] py-32 relative overflow-hidden">
+    <section 
+      ref={ref}
+      id="about" 
+      className={`min-h-screen bg-[#1a1a2e] px-[9%] py-32 relative overflow-hidden transition-all duration-1000 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+      }`}>
       <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[120px]"></div>
       
       <h2 className="text-center text-[4.5rem] font-[800] mb-24">

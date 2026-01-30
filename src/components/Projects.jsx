@@ -1,6 +1,9 @@
 import { FiGithub } from 'react-icons/fi';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const Projects = () => {
+  const [ref, isVisible] = useScrollAnimation(0.1);
+
   const projects = [
     {
       title: "E-Commerce Platform",
@@ -41,7 +44,12 @@ const Projects = () => {
   ];
 
   return (
-    <section id="projects" className="min-h-screen px-[9%] py-32 relative overflow-hidden">
+    <section 
+      ref={ref}
+      id="projects" 
+      className={`min-h-screen px-[9%] py-32 relative overflow-hidden transition-all duration-1000 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+      }`}>
       <div className="absolute top-1/2 right-0 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-[120px]"></div>
       
       <h2 className="text-center text-[4.5rem] font-[800] mb-6">

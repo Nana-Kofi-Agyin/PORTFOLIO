@@ -1,4 +1,8 @@
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
+
 const Skills = () => {
+  const [ref, isVisible] = useScrollAnimation(0.1);
+
   const skills = [
     { name: "HTML & CSS", level: 95, color: "from-orange-500 to-red-500" },
     { name: "JavaScript", level: 90, color: "from-yellow-400 to-orange-500" },
@@ -9,7 +13,12 @@ const Skills = () => {
   ];
 
   return (
-    <section id="skills" className="min-h-screen bg-[#1a1a2e] px-[9%] py-32 flex flex-col justify-center relative overflow-hidden">
+    <section 
+      ref={ref}
+      id="skills" 
+      className={`min-h-screen bg-[#1a1a2e] px-[9%] py-32 flex flex-col justify-center relative overflow-hidden transition-all duration-1000 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+      }`}>
       <div className="absolute top-0 left-1/2 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[120px]"></div>
       
       <h2 className="text-center text-[4.5rem] font-[800] mb-6">

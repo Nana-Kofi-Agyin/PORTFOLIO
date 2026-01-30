@@ -1,4 +1,8 @@
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
+
 const Services = () => {
+  const [ref, isVisible] = useScrollAnimation(0.1);
+
   const services = [
     {
       icon: "💻",
@@ -33,7 +37,12 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="min-h-screen px-[9%] py-32 relative overflow-hidden">
+    <section 
+      ref={ref}
+      id="services" 
+      className={`min-h-screen px-[9%] py-32 relative overflow-hidden transition-all duration-1000 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+      }`}>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-[120px]"></div>
       
       <h2 className="text-center text-[4.5rem] font-[800] mb-6">

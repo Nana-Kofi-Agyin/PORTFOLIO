@@ -1,8 +1,16 @@
 import { FiSend } from 'react-icons/fi';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const Contact = () => {
+  const [ref, isVisible] = useScrollAnimation(0.1);
+
   return (
-    <section id="contact" className="min-h-screen bg-[#1a1a2e] px-[9%] py-32 flex items-center justify-center relative overflow-hidden">
+    <section 
+      ref={ref}
+      id="contact" 
+      className={`min-h-screen bg-[#1a1a2e] px-[9%] py-32 flex items-center justify-center relative overflow-hidden transition-all duration-1000 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
+      }`}>
       <div className="absolute top-0 left-1/2 w-[40rem] h-[40rem] bg-indigo-500/20 rounded-full filter blur-[150px]"></div>
       
       <div className="w-full max-w-[75rem] relative z-10">
