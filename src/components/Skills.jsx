@@ -16,7 +16,7 @@ const Skills = () => {
     <section 
       ref={ref}
       id="skills" 
-      className={`min-h-screen bg-[#1a1a2e] px-[9%] py-32 flex flex-col justify-center relative overflow-hidden transition-all duration-1000 ${
+      className={`min-h-screen bg-[#1a1a2e] px-[9%] py-16 flex flex-col justify-center relative overflow-hidden transition-all duration-1000 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
       }`}>
       <div className="absolute top-0 left-1/2 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[120px]"></div>
@@ -24,7 +24,7 @@ const Skills = () => {
       <h2 className="text-center text-[4.5rem] font-[800] mb-6">
         My <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Skills</span>
       </h2>
-      <p className="text-center text-[1.6rem] text-gray-400 mb-20 max-w-[60rem] mx-auto">
+      <p className="text-center text-[1.6rem] text-gray-400 mb-10 max-w-[60rem] mx-auto">
         Technologies and tools I use to bring ideas to life
       </p>
       

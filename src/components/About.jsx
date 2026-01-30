@@ -1,4 +1,5 @@
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { Rocket } from 'lucide-react';
 
 const About = () => {
   const [ref, isVisible] = useScrollAnimation(0.1);
@@ -7,23 +8,28 @@ const About = () => {
     <section 
       ref={ref}
       id="about" 
-      className={`min-h-screen bg-[#1a1a2e] px-[9%] py-32 relative overflow-hidden transition-all duration-1000 ${
+      className={`min-h-screen bg-[#1a1a2e] px-[9%] py-16 relative overflow-hidden transition-all duration-1000 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
       }`}>
       <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[120px]"></div>
       
-      <h2 className="text-center text-[4.5rem] font-[800] mb-24">
+      <h2 className="text-center text-[4.5rem] font-[800] mb-12">
         About <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Me</span>
       </h2>
       
-      <div className="flex justify-center items-center gap-16 flex-wrap">
-        <div className="hidden md:block">
-          <div className="w-[32rem] h-[40rem] rounded-3xl bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-transparent backdrop-blur-sm border border-white/10 overflow-hidden relative group"
-               style={{boxShadow: '0 20px 60px rgba(99, 102, 241, 0.2)'}}>
-            <div className="w-full h-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center text-[10rem] transition-transform duration-500 group-hover:scale-110">
-              🚀
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
+        <div className="hidden lg:flex justify-center lg:justify-start">
+          <div className="relative w-[400px] h-[500px] md:w-[450px] md:h-[550px]">
+            {/* Glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/30 to-purple-600/30 rounded-[2rem] blur-2xl"></div>
+            
+            {/* Icon container */}
+            <div className="relative w-full h-full rounded-[2rem] bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-transparent backdrop-blur-sm border border-white/10 overflow-hidden group shadow-[0_20px_60px_rgba(99,102,241,0.3)]">
+              <div className="w-full h-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
+                <Rocket className="w-40 h-40 text-indigo-400" />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-indigo-600/20 to-transparent"></div>
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-indigo-600/20 to-transparent"></div>
           </div>
         </div>
         

@@ -8,7 +8,7 @@ const Contact = () => {
     <section 
       ref={ref}
       id="contact" 
-      className={`min-h-screen bg-[#1a1a2e] px-[9%] py-32 flex items-center justify-center relative overflow-hidden transition-all duration-1000 ${
+      className={`min-h-screen bg-[#1a1a2e] px-[9%] py-16 flex items-center justify-center relative overflow-hidden transition-all duration-1000 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
       }`}>
       <div className="absolute top-0 left-1/2 w-[40rem] h-[40rem] bg-indigo-500/20 rounded-full filter blur-[150px]"></div>
@@ -17,7 +17,7 @@ const Contact = () => {
         <h2 className="text-center text-[4.5rem] font-[800] mb-6">
           Get In <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Touch</span>
         </h2>
-        <p className="text-center text-[1.6rem] text-gray-400 mb-16">
+        <p className="text-center text-[1.6rem] text-gray-400 mb-10">
           Have a project in mind? Let's work together to create something amazing
         </p>
         
