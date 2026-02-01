@@ -50,9 +50,7 @@ const About = () => {
           viewport={{ once: true, amount: 0.2 }}
           variants={slideRightVariants}
         >
-          <div className="inline-block px-4 py-2 bg-indigo-500/10 rounded-full border border-indigo-500/20 mb-6">
-            <span className="text-[1.3rem] text-indigo-400 font-[500]">👋 Get to know me</span>
-          </div>
+
           <h3 className="text-[2.8rem] mb-6 font-[700] bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Full Stack Developer & Software Engineer</h3>
           <p className="text-[1.6rem] leading-[1.9] mb-6 text-gray-400">
             My journey in software engineering led me to discover my true passion: Full Stack development. I've transitioned from a general software engineer to a specialist who thrives on building end-to-end scalable applications. There's something deeply satisfying about architecting a complete solution—from database design to the final pixel on screen—ensuring every layer works harmoniously to deliver exceptional user experiences.

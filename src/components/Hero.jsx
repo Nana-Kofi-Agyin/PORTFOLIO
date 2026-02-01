@@ -54,16 +54,6 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
           className="space-y-6 md:space-y-8 text-center lg:text-left flex flex-col items-center lg:items-start"
         >
-          {/* Welcome Tag */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600/20 border border-indigo-500/30 rounded-full"
-          >
-            <Sparkles className="w-4 h-4 text-indigo-300" />
-            <span className="text-[1.1rem] md:text-[1.3rem] text-indigo-300 font-[500]">Welcome to my portfolio</span>
-          </motion.div>
 
           {/* H1 Heading - Responsive font sizes */}
           <motion.h1

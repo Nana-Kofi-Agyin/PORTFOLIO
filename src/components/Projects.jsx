@@ -18,24 +18,6 @@ const Projects = () => {
       tags: ["React", "Socket.io", "Express"]
     },
     {
-      title: "Task Manager",
-      description: "Collaborative task management with team features",
-      icon: CheckSquare,
-      tags: ["Vue", "Firebase", "Tailwind"]
-    },
-    {
-      title: "Weather Dashboard",
-      description: "Interactive weather app with beautiful data visualizations",
-      icon: Cloud,
-      tags: ["React", "Chart.js", "API"]
-    },
-    {
-      title: "Blog Platform",
-      description: "Modern blogging platform with markdown support",
-      icon: Pen,
-      tags: ["Next.js", "MDX", "Vercel"]
-    },
-    {
       title: "Portfolio Generator",
       description: "Tool to create stunning portfolios in minutes",
       icon: Briefcase,
