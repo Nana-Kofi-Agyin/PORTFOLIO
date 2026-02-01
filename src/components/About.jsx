@@ -60,9 +60,7 @@ const About = () => {
           <p className="text-[1.6rem] leading-[1.9] mb-6 text-gray-400">
             I don't just write code—I architect user-centric solutions. My problem-solving mindset drives me to look beyond immediate requirements and understand the bigger picture. Whether it's optimizing database queries for performance, designing intuitive APIs, or crafting responsive interfaces, I approach every challenge with the end user in mind, ensuring that technical excellence translates into meaningful value.
           </p>
-          <p className="text-[1.6rem] leading-[1.9] mb-8 text-gray-400">
-            Staying ahead of industry trends isn't just a goal—it's a commitment. I'm constantly exploring emerging technologies, best practices, and architectural patterns to deliver cutting-edge solutions. My collaborative nature means I thrive in team environments, believing that the best solutions emerge from diverse perspectives and open communication.
-          </p>
+
           
           <motion.div 
             className="grid grid-cols-3 gap-6 mt-12"
