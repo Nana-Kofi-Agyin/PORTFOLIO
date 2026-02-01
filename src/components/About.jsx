@@ -1,24 +1,34 @@
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { motion } from 'framer-motion';
 import { Rocket } from 'lucide-react';
+import { fadeUpVariants, slideLeftVariants, slideRightVariants, staggerContainerVariants, staggerItemVariants } from '../utils/animationVariants';
 
 const About = () => {
-  const [ref, isVisible] = useScrollAnimation(0.1);
 
   return (
     <section 
-      ref={ref}
       id="about" 
-      className={`min-h-screen bg-[#1a1a2e] px-[9%] py-16 relative overflow-hidden transition-all duration-1000 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-      }`}>
+      className="min-h-screen bg-[#1a1a2e] px-[9%] py-16 relative overflow-hidden"
+    >
       <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[120px]"></div>
       
-      <h2 className="text-center text-[4.5rem] font-[800] mb-12">
+      <motion.h2 
+        className="text-center text-[4.5rem] font-[800] mb-12"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={fadeUpVariants}
+      >
         About <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Me</span>
-      </h2>
+      </motion.h2>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
-        <div className="hidden lg:flex justify-center lg:justify-start">
+        <motion.div 
+          className="hidden lg:flex justify-center lg:justify-start"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={slideLeftVariants}
+        >
           <div className="relative w-[400px] h-[500px] md:w-[450px] md:h-[550px]">
             {/* Glow effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/30 to-purple-600/30 rounded-[2rem] blur-2xl"></div>
@@ -31,42 +41,64 @@ const About = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-indigo-600/20 to-transparent"></div>
             </div>
           </div>
-        </div>
+        </motion.div>
         
-        <div className="max-w-[60rem]">
+        <motion.div 
+          className="max-w-[60rem]"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={slideRightVariants}
+        >
           <div className="inline-block px-4 py-2 bg-indigo-500/10 rounded-full border border-indigo-500/20 mb-6">
             <span className="text-[1.3rem] text-indigo-400 font-[500]">👋 Get to know me</span>
           </div>
-          <h3 className="text-[2.8rem] mb-6 font-[700] bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Full Stack Developer & Creative Thinker</h3>
+          <h3 className="text-[2.8rem] mb-6 font-[700] bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Full Stack Developer & Software Engineer</h3>
           <p className="text-[1.6rem] leading-[1.9] mb-6 text-gray-400">
-            I'm a passionate full stack developer with expertise in building scalable, modern web applications. 
-            I thrive on transforming complex problems into elegant solutions that create meaningful impact.
+            My journey in software engineering led me to discover my true passion: Full Stack development. I've transitioned from a general software engineer to a specialist who thrives on building end-to-end scalable applications. There's something deeply satisfying about architecting a complete solution—from database design to the final pixel on screen—ensuring every layer works harmoniously to deliver exceptional user experiences.
+          </p>
+          <p className="text-[1.6rem] leading-[1.9] mb-6 text-gray-400">
+            I don't just write code—I architect user-centric solutions. My problem-solving mindset drives me to look beyond immediate requirements and understand the bigger picture. Whether it's optimizing database queries for performance, designing intuitive APIs, or crafting responsive interfaces, I approach every challenge with the end user in mind, ensuring that technical excellence translates into meaningful value.
           </p>
           <p className="text-[1.6rem] leading-[1.9] mb-8 text-gray-400">
-            With comprehensive experience across the full development stack, I specialize in crafting 
-            seamless user experiences powered by robust, efficient backend architectures.
+            Staying ahead of industry trends isn't just a goal—it's a commitment. I'm constantly exploring emerging technologies, best practices, and architectural patterns to deliver cutting-edge solutions. My collaborative nature means I thrive in team environments, believing that the best solutions emerge from diverse perspectives and open communication.
           </p>
           
-          <div className="grid grid-cols-3 gap-6 mt-12">
-            <div className="text-center p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/30 transition-all duration-300 hover:transform hover:-translate-y-1">
+          <motion.div 
+            className="grid grid-cols-3 gap-6 mt-12"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainerVariants}
+          >
+            <motion.div 
+              variants={staggerItemVariants}
+              className="text-center p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/30 transition-all duration-300 hover:transform hover:-translate-y-1"
+            >
               <h4 className="text-[3.5rem] font-[800] bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent mb-2">3+</h4>
               <span className="text-[1.3rem] text-gray-400 font-[500] block">Years Experience</span>
-            </div>
-            <div className="text-center p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/30 transition-all duration-300 hover:transform hover:-translate-y-1">
+            </motion.div>
+            <motion.div 
+              variants={staggerItemVariants}
+              className="text-center p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/30 transition-all duration-300 hover:transform hover:-translate-y-1"
+            >
               <h4 className="text-[3.5rem] font-[800] bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent mb-2">50+</h4>
               <span className="text-[1.3rem] text-gray-400 font-[500] block">Projects Completed</span>
-            </div>
-            <div className="text-center p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/30 transition-all duration-300 hover:transform hover:-translate-y-1">
+            </motion.div>
+            <motion.div 
+              variants={staggerItemVariants}
+              className="text-center p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/30 transition-all duration-300 hover:transform hover:-translate-y-1"
+            >
               <h4 className="text-[3.5rem] font-[800] bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent mb-2">30+</h4>
               <span className="text-[1.3rem] text-gray-400 font-[500] block">Happy Clients</span>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
           
           <a href="#contact" 
              className="block mt-12 px-10 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl text-[1.5rem] text-white font-[600] transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/50 hover:scale-105 text-center">
             Let's Connect
           </a>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

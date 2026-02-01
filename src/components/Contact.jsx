@@ -1,27 +1,39 @@
+import { motion } from 'framer-motion';
 import { FiSend } from 'react-icons/fi';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { fadeUpVariants, scaleInVariants } from '../utils/animationVariants';
 
 const Contact = () => {
-  const [ref, isVisible] = useScrollAnimation(0.1);
 
   return (
     <section 
-      ref={ref}
       id="contact" 
-      className={`min-h-screen bg-[#1a1a2e] px-[9%] py-16 flex items-center justify-center relative overflow-hidden transition-all duration-1000 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-      }`}>
+      className="min-h-screen bg-[#1a1a2e] px-[9%] py-16 flex items-center justify-center relative overflow-hidden"
+    >
       <div className="absolute top-0 left-1/2 w-[40rem] h-[40rem] bg-indigo-500/20 rounded-full filter blur-[150px]"></div>
       
       <div className="w-full max-w-[75rem] relative z-10">
-        <h2 className="text-center text-[4.5rem] font-[800] mb-6">
-          Get In <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Touch</span>
-        </h2>
-        <p className="text-center text-[1.6rem] text-gray-400 mb-10">
-          Have a project in mind? Let's work together to create something amazing
-        </p>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={fadeUpVariants}
+        >
+          <h2 className="text-center text-[4.5rem] font-[800] mb-6">
+            Get In <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Touch</span>
+          </h2>
+          <p className="text-center text-[1.6rem] text-gray-400 mb-10">
+            Have a project in mind? Let's work together to create something amazing
+          </p>
+        </motion.div>
         
-        <form className="w-full bg-white/5 backdrop-blur-sm p-12 rounded-3xl border border-white/10" style={{boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'}}>
+        <motion.form 
+          className="w-full bg-white/5 backdrop-blur-sm p-12 rounded-3xl border border-white/10" 
+          style={{boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'}}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={scaleInVariants}
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             <input 
               type="text" 
@@ -58,7 +70,7 @@ const Contact = () => {
             <span>Send Message</span>
             <FiSend className="w-5 h-5" />
           </button>
-        </form>
+        </motion.form>
       </div>
     </section>
   );

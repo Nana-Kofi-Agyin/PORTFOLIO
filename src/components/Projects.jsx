@@ -1,8 +1,8 @@
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { motion } from 'framer-motion';
 import { ShoppingCart, MessageSquare, CheckSquare, Cloud, Calendar, Briefcase, Github, Pen } from 'lucide-react';
+import { fadeUpVariants, staggerContainerVariants, staggerItemVariants } from '../utils/animationVariants';
 
 const Projects = () => {
-  const [ref, isVisible] = useScrollAnimation(0.1);
 
   const projects = [
     {
@@ -45,27 +45,40 @@ const Projects = () => {
 
   return (
     <section 
-      ref={ref}
       id="projects" 
-      className={`min-h-screen px-[9%] py-16 flex flex-col justify-center relative overflow-hidden transition-all duration-1000 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
-      }`}>
+      className="min-h-screen px-[9%] py-16 flex flex-col justify-center relative overflow-hidden"
+    >
       <div className="absolute bottom-0 right-1/4 w-[50rem] h-[50rem] bg-purple-500/10 rounded-full filter blur-[150px]"></div>
       
-      <h2 className="text-center text-[4.5rem] font-[800] mb-6">
-        Featured <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Projects</span>
-      </h2>
-      <p className="text-center text-[1.6rem] text-gray-400 mb-10 max-w-[60rem] mx-auto">
-        Showcasing my recent work and creative solutions
-      </p>
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={fadeUpVariants}
+      >
+        <h2 className="text-center text-[4.5rem] font-[800] mb-6">
+          Featured <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Projects</span>
+        </h2>
+        <p className="text-center text-[1.6rem] text-gray-400 mb-10 max-w-[60rem] mx-auto">
+          Showcasing my recent work and creative solutions
+        </p>
+      </motion.div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <motion.div 
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={staggerContainerVariants}
+      >
         {projects.map((project, index) => {
           const IconComponent = project.icon;
           return (
-          <div
+          <motion.div
             key={index}
-            className="relative rounded-2xl overflow-hidden group cursor-pointer bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/50 transition-all duration-300 hover:-translate-y-2"
+            variants={staggerItemVariants}
+            whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            className="relative rounded-2xl overflow-hidden group cursor-pointer bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/50 transition-colors duration-300"
             style={{boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)'}}
           >
             <div className="w-full h-[28rem] bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-transparent flex items-center justify-center text-indigo-400 transition-transform duration-500 group-hover:scale-110">
@@ -90,10 +103,10 @@ const Projects = () => {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
         );
         })}
-      </div>
+      </motion.div>
     </section>
   );
 };

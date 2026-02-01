@@ -7,10 +7,14 @@ import Projects from './components/Projects'
 import Skills from './components/Skills'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import ScrollProgress from './components/ScrollProgress'
 
 function App() {
   return (
     <div className="bg-[#0b0b1a] min-h-screen overflow-x-hidden">
+      {/* Scroll Progress Bar */}
+      <ScrollProgress />
+      
       {/* Radial gradient background */}
       <div className="fixed inset-0 bg-gradient-radial from-indigo-900/20 via-[#0b0b1a] to-[#0b0b1a] pointer-events-none"></div>
       

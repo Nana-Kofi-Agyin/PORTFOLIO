@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
 
 /**
  * Navbar Component
- * Sticky navigation with glassmorphism effect
+ * Sticky navigation with glassmorphism effect and mobile hamburger menu
  */
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState('#home');
@@ -76,39 +77,68 @@ const Navbar = () => {
         {/* Mobile menu button */}
         <button 
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-white text-3xl z-50"
+          className="md:hidden text-white z-[1001] relative min-w-[44px] min-h-[44px] flex items-center justify-center"
+          aria-label="Toggle menu"
         >
-          {isOpen ? '✕' : '☰'}
+          {isOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
         </button>
       </motion.header>
 
-      {/* Mobile Navigation Menu */}
-      {isOpen && (
-        <motion.nav 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="md:hidden fixed top-[80px] left-0 w-full px-[9%] py-8 bg-[#0b0b1a]/95 backdrop-blur-xl border-b border-indigo-500/20 z-[999]"
-        >
-          {navLinks.map((link) => (
-            <a 
-              key={link.href}
-              href={link.href} 
-              onClick={() => { setActiveLink(link.href); setIsOpen(false); }}
-              className="block text-[2rem] my-6 text-gray-300 hover:text-indigo-400 transition-colors"
+      {/* Mobile Navigation Drawer - Slide from Right */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[998] md:hidden"
+            />
+            
+            {/* Side Drawer */}
+            <motion.nav 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'tween', duration: 0.3 }}
+              className="md:hidden fixed top-0 right-0 h-full w-[75%] max-w-[320px] bg-[#0b0b1a]/98 backdrop-blur-xl border-l border-indigo-500/20 z-[999] shadow-[-10px_0_50px_rgba(99,102,241,0.3)] overflow-y-auto"
             >
-              {link.name}
-            </a>
-          ))}
-          <a 
-            href="#contact"
-            onClick={() => { setActiveLink('#contact'); setIsOpen(false); }}
-            className="block mt-6 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[1.6rem] font-[600] rounded-full text-center"
-          >
-            Contact me
-          </a>
-        </motion.nav>
-      )}
+              <div className="p-8 pt-24">
+                {/* Mobile Navigation Links */}
+                <div className="space-y-2 mb-12">
+                  {navLinks.map((link, index) => (
+                    <motion.a 
+                      key={link.href}
+                      href={link.href} 
+                      onClick={() => { setActiveLink(link.href); setIsOpen(false); }}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="block py-4 px-6 text-[1.8rem] text-gray-300 hover:text-white hover:bg-indigo-600/10 rounded-xl transition-all duration-300 min-h-[56px] flex items-center"
+                    >
+                      {link.name}
+                    </motion.a>
+                  ))}
+                </div>
+                
+                {/* Contact Button in Mobile Menu */}
+                <motion.a 
+                  href="#contact"
+                  onClick={() => { setActiveLink('#contact'); setIsOpen(false); }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="block w-full py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[1.6rem] font-[600] rounded-xl hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300 text-center min-h-[56px] flex items-center justify-center"
+                >
+                  Contact Me
+                </motion.a>
+              </div>
+            </motion.nav>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 };
