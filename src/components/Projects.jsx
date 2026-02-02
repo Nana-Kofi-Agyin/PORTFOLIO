@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
 import { ShoppingCart, MessageSquare, CheckSquare, Cloud, Calendar, Briefcase, Github, Pen } from 'lucide-react';
 import { fadeUpVariants, staggerContainerVariants, staggerItemVariants } from '../utils/animationVariants';
 import SkeletonLoader from './SkeletonLoader';
