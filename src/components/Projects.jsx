@@ -1,40 +1,24 @@
 import { useState, useEffect } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, MessageSquare, CheckSquare, Cloud, Calendar, Briefcase, Github, Pen } from 'lucide-react';
+import { Github, ExternalLink, Tag } from 'lucide-react';
 import { fadeUpVariants, staggerContainerVariants } from '../utils/animationVariants';
 import SkeletonLoader from './SkeletonLoader';
+import { projects } from '../data/projectsData';
 
 const Projects = () => {
   const [loading, setLoading] = useState(true);
 
-  const projects = [
-    {
-      title: "E-Commerce Platform",
-      description: "Full-stack e-commerce with payment integration and admin dashboard",
-      icon: ShoppingCart,
-      tags: ["React", "Node.js", "MongoDB"],
-      category: 'Full Stack'
-    },
-    {
-      title: "Social Media App",
-      description: "Real-time social platform with messaging and notifications",
-      icon: MessageSquare,
-      tags: ["React", "Socket.io", "Express"],
-      category: 'Full Stack'
-    },
-    {
-      title: "Portfolio Generator",
-      description: "Tool to create stunning portfolios in minutes",
-      icon: Briefcase,
-      tags: ["React", "TypeScript", "Vite"],
-      category: 'Frontend'
-    }
-  ];
-
-  const categories = ['All', ...Array.from(new Set(projects.map(p => p.category)))];
+  const categories = ['All', ...Array.from(new Set(projects.flatMap(p => 
+    Object.values(p.skillTags || {}).flat()
+  )))];
+  
   const [filter, setFilter] = useState('All');
-  const filtered = filter === 'All' ? projects : projects.filter(p => p.category === filter);
+  const filtered = filter === 'All' 
+    ? projects 
+    : projects.filter(p => 
+        Object.values(p.skillTags || {}).flat().includes(filter)
+      );
 
   // Simulate loading delay for demonstration
   useEffect(() => {
@@ -60,8 +44,11 @@ const Projects = () => {
         <h2 className="text-center text-[4.5rem] font-[800] mb-6">
           Featured <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Projects</span>
         </h2>
-        <p className="text-center text-[1.6rem] text-gray-400 mb-10 max-w-[60rem] mx-auto">
+        <p className="text-center text-[1.6rem] text-gray-400 mb-4 max-w-[60rem] mx-auto">
           Showcasing my recent work and creative solutions
+        </p>
+        <p className="text-center text-sm text-purple-400 italic mb-10">
+          🔖 Click on a skill tag from the Skills section to filter projects
         </p>
       </motion.div>
       
@@ -71,14 +58,6 @@ const Projects = () => {
         </div>
       ) : (
         <>
-          <div className="mb-8 flex gap-3 justify-center">
-            {categories.map((c) => (
-              <button key={c} onClick={() => setFilter(c)} className={`px-4 py-2 rounded-md text-[1.4rem] ${filter === c ? 'bg-indigo-600 text-white' : 'bg-white/5 text-gray-300'}`}>
-                {c}
-              </button>
-            ))}
-          </div>
-
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             initial="hidden"
@@ -88,7 +67,7 @@ const Projects = () => {
           >
             <AnimatePresence>
               {filtered.map((project) => {
-                const IconComponent = project.icon;
+                const IconComponent = project.image;
                 return (
                   <motion.div
                     key={project.title}
@@ -106,18 +85,44 @@ const Projects = () => {
                     <div className="p-8">
                       <h4 className="text-[2.2rem] font-[700] mb-3 text-white">{project.title}</h4>
                       <p className="text-[1.4rem] mb-6 text-gray-400">{project.description}</p>
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        {project.tags.map((tag, idx) => (
-                          <span key={idx} className="px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full text-[1.2rem] border border-indigo-500/30">
-                            {tag}
+                      
+                      {/* Skill Tags with visual connection to Skills section */}
+                      <div className="mb-6">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Tag className="w-4 h-4 text-purple-400" />
+                          <span className="text-xs text-purple-400 font-semibold uppercase tracking-wide">
+                            Technologies
                           </span>
-                        ))}
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {project.tags.map((tag, idx) => (
+                            <span 
+                              key={idx} 
+                              className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-[1.2rem] border border-purple-500/30 hover:border-purple-400 hover:bg-purple-500/30 transition-all cursor-pointer"
+                              title={`Used in this project - see Skills section`}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
                       </div>
+
                       <div className="flex gap-4">
-                        <a href="#" className="flex-1 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg text-white text-[1.4rem] font-[600] text-center transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50">
+                        <a 
+                          href={project.liveDemo} 
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg text-white text-[1.4rem] font-[600] text-center transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50 flex items-center justify-center gap-2"
+                        >
                           View Project
+                          <ExternalLink className="w-4 h-4" />
                         </a>
-                        <a href="#" className="inline-flex justify-center items-center w-[4.5rem] bg-white/5 border border-white/10 rounded-lg text-gray-400 hover:text-indigo-400 hover:border-indigo-500/30 transition-all duration-300">
+                        <a 
+                          href={project.githubLink}
+                          target="_blank"
+                          rel="noopener noreferrer" 
+                          className="inline-flex justify-center items-center w-[4.5rem] bg-white/5 border border-white/10 rounded-lg text-gray-400 hover:text-indigo-400 hover:border-indigo-500/30 transition-all duration-300"
+                        >
                           <Github className="w-5 h-5" />
                         </a>
                       </div>
