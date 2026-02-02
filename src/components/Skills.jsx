@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fadeUpVariants, staggerContainerVariants, staggerItemVariants } from '../utils/animationVariants';
-import { Code2, Server, Database, Wrench, Lightbulb, Brain, ArrowUpRight, Sparkles } from 'lucide-react';
+import { Code2, Server, Database, Wrench, Lightbulb, Sparkles } from 'lucide-react';
 import SkeletonLoader from './SkeletonLoader';
 import { skillCategories, softSkills, currentlyLearning } from '../data/skillsData';
 import * as SimpleIcons from 'simple-icons';
@@ -82,7 +82,7 @@ const SkillCard = ({ skill, size = "normal" }) => {
   
   const sizeClasses = {
     small: "col-span-1 row-span-1 p-4",
-    normal: "col-span-1 md:col-span-1 row-span-1 p-6",
+    normal: "col-span-1 row-span-1 p-5",
     large: "col-span-1 md:col-span-2 row-span-1 p-6"
   };
 
@@ -94,14 +94,14 @@ const SkillCard = ({ skill, size = "normal" }) => {
       onHoverEnd={() => setIsHovered(false)}
       className={`relative group bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-white/10 
         shadow-lg transition-all duration-300 hover:border-purple-400/50 hover:bg-slate-900/70 
-        hover:shadow-purple-500/20 hover:shadow-2xl cursor-pointer ${sizeClasses[size]}`}
+        hover:shadow-purple-500/20 hover:shadow-2xl cursor-pointer min-h-[150px] ${sizeClasses[size]}`}
     >
       <SkillTooltip skill={skill} isHovered={isHovered} />
       
       <div className="flex flex-col items-center justify-center h-full text-center space-y-3">
         <div className="relative">
           <div className="absolute inset-0 bg-purple-500/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          <SkillIcon iconName={skill.icon} className="w-12 h-12 relative z-10 transition-transform duration-300 group-hover:scale-110" />
+          <SkillIcon iconName={skill.icon} className="w-14 h-14 relative z-10 transition-transform duration-300 group-hover:scale-110" />
         </div>
         
         <div>
@@ -141,7 +141,7 @@ const CategorySection = ({ category, categoryKey, icon: Icon }) => {
       </div>
 
       <motion.div
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6"
         variants={staggerContainerVariants}
       >
         {category.skills.map((skill, idx) => {
@@ -211,50 +211,12 @@ const LearningMarquee = () => {
   );
 };
 
-// Soft Skills Component
-const SoftSkillsSection = () => {
-  return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
-      variants={fadeUpVariants}
-      className="mb-16"
-    >
-      <div className="flex items-center gap-3 mb-6">
-        <div className="bg-gradient-to-br from-pink-500/20 to-rose-500/20 p-3 rounded-xl border border-pink-500/30">
-          <Brain className="w-6 h-6 text-pink-400" />
-        </div>
-        <h3 className="text-3xl font-bold text-white">Professional Skills</h3>
-        <div className="flex-1 h-[2px] bg-gradient-to-r from-pink-500/50 to-transparent"></div>
-      </div>
 
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-        variants={staggerContainerVariants}
-      >
-        {softSkills.map((skill, idx) => (
-          <motion.div
-            key={idx}
-            variants={staggerItemVariants}
-            whileHover={{ y: -4 }}
-            className="bg-slate-900/50 backdrop-blur-sm border border-white/10 rounded-xl p-5 hover:border-pink-400/50 transition-all duration-300"
-          >
-            <h4 className="text-white font-bold text-sm mb-2 flex items-center gap-2">
-              <ArrowUpRight className="w-4 h-4 text-pink-400" />
-              {skill.name}
-            </h4>
-            <p className="text-gray-400 text-xs">{skill.description}</p>
-          </motion.div>
-        ))}
-      </motion.div>
-    </motion.div>
-  );
-};
 
 // Main Skills Component
 const Skills = () => {
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('frontend');
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 900);
@@ -268,10 +230,32 @@ const Skills = () => {
     tools: Wrench
   };
 
+  // Tab configuration combining related categories
+  const tabs = [
+    { 
+      id: 'frontend', 
+      label: 'Frontend', 
+      icon: Code2,
+      categories: ['languages', 'frontend']
+    },
+    { 
+      id: 'backend', 
+      label: 'Backend', 
+      icon: Server,
+      categories: ['backend']
+    },
+    { 
+      id: 'tools', 
+      label: 'Tools & DevOps', 
+      icon: Wrench,
+      categories: ['tools']
+    }
+  ];
+
   return (
     <section
       id="skills"
-      className="min-h-screen bg-[#1a1a2e] px-[9%] py-16 relative overflow-hidden"
+      className="min-h-[85vh] bg-[#1a1a2e] px-[9%] py-16 relative overflow-hidden"
     >
       {/* Background Effects */}
       <div className="absolute top-0 left-1/2 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[120px]"></div>
@@ -303,21 +287,63 @@ const Skills = () => {
           </div>
         ) : (
           <>
-            {/* Technical Skills Categories */}
-            {Object.entries(skillCategories).map(([key, category]) => (
-              <CategorySection
-                key={key}
-                category={category}
-                categoryKey={key}
-                icon={categoryIcons[key]}
-              />
-            ))}
+            {/* Tab Navigation */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={fadeUpVariants}
+              className="mb-12"
+            >
+              <div className="flex flex-wrap justify-center gap-4">
+                {tabs.map((tab) => {
+                  const Icon = tab.icon;
+                  return (
+                    <motion.button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-base transition-all duration-300 ${
+                        activeTab === tab.id
+                          ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/50'
+                          : 'bg-slate-900/50 text-gray-400 border border-white/10 hover:border-purple-400/50 hover:text-white'
+                      }`}
+                    >
+                      <Icon className="w-5 h-5" />
+                      {tab.label}
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            {/* Technical Skills Categories - Tab Content */}
+            <div className="relative mb-16">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  {tabs
+                    .find(tab => tab.id === activeTab)
+                    ?.categories.map((categoryKey) => (
+                      <CategorySection
+                        key={categoryKey}
+                        category={skillCategories[categoryKey]}
+                        categoryKey={categoryKey}
+                        icon={categoryIcons[categoryKey]}
+                      />
+                    ))}
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
             {/* Currently Learning Marquee */}
             <LearningMarquee />
-
-            {/* Soft Skills */}
-            <SoftSkillsSection />
           </>
         )}
       </div>
