@@ -1,9 +1,13 @@
 /* eslint-disable no-unused-vars */
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { fadeUpVariants, staggerContainerVariants, staggerItemVariants } from '../utils/animationVariants';
 import { Server, Zap, Code2, Plug } from 'lucide-react';
+import SkeletonLoader from './SkeletonLoader';
 
 const Skills = () => {
+  const [loading, setLoading] = useState(true);
+
   // Frontend skills with progress bars
   const frontendSkills = [
     { name: "React", level: 92, color: "bg-cyan-500" },
@@ -45,6 +49,14 @@ const Skills = () => {
     })
   };
 
+  // Simulate loading delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section 
       id="skills" 
@@ -67,13 +79,23 @@ const Skills = () => {
       </motion.div>
       
       <div className="max-w-[80rem] mx-auto w-full">
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={staggerContainerVariants}
-        >
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="md:col-span-2">
+              <SkeletonLoader variant="skill" count={1} />
+            </div>
+            <div className="flex flex-col gap-6">
+              <SkeletonLoader variant="skill" count={2} />
+            </div>
+          </div>
+        ) : (
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainerVariants}
+          >
           {/* FRONTEND CARD - Spans 2 columns */}
           <motion.div
             variants={staggerItemVariants}
@@ -201,6 +223,7 @@ const Skills = () => {
             </div>
           </motion.div>
         </motion.div>
+        )}
       </div>
     </section>
   );

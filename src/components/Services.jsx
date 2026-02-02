@@ -1,8 +1,10 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { Code, Smartphone, Palette, Rocket, Wrench, Database } from 'lucide-react';
 import { fadeUpVariants, staggerContainerVariants, scaleInVariants } from '../utils/animationVariants';
+import SkeletonLoader from './SkeletonLoader';
 
 const Services = () => {
+  const [loading, setLoading] = useState(true);
 
   const services = [
     {
@@ -37,6 +39,14 @@ const Services = () => {
     }
   ];
 
+  // Simulate loading delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section 
       id="services" 
@@ -58,34 +68,41 @@ const Services = () => {
         </p>
       </motion.div>
       
-      <motion.div 
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={staggerContainerVariants}
-      >
-        {services.map((service, index) => {
-          const IconComponent = service.icon;
-          return (
-          <motion.div
-            key={index}
-            variants={scaleInVariants}
-            whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.3 } }}
-            className="bg-white/5 backdrop-blur-sm p-12 rounded-2xl text-center border border-white/10 transition-colors duration-300 hover:border-indigo-500/50 hover:bg-white/10 group"
-            style={{boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)'}}
-          >
-            <div className="text-indigo-400 mb-6 transition-transform duration-300 group-hover:scale-110 flex justify-center">
-              <IconComponent className="w-20 h-20" />
-            </div>
-            <h3 className="text-[2.2rem] font-[700] mb-6 text-white">{service.title}</h3>
-            <p className="text-[1.5rem] leading-[1.8] text-gray-400">{service.description}</p>
-          </motion.div>
-        );
-        })}
-      </motion.div>
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <SkeletonLoader variant="service" count={6} />
+        </div>
+      ) : (
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={staggerContainerVariants}
+        >
+          {services.map((service, index) => {
+            const IconComponent = service.icon;
+            return (
+              <motion.div
+                key={index}
+                variants={scaleInVariants}
+                whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.3 } }}
+                className="bg-white/5 backdrop-blur-sm p-12 rounded-2xl text-center border border-white/10 transition-colors duration-300 hover:border-indigo-500/50 hover:bg-white/10 group"
+                style={{boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)'}}
+              >
+                <div className="text-indigo-400 mb-6 transition-transform duration-300 group-hover:scale-110 flex justify-center">
+                  <IconComponent className="w-20 h-20" />
+                </div>
+                <h3 className="text-[2.2rem] font-[700] mb-6 text-white">{service.title}</h3>
+                <p className="text-[1.5rem] leading-[1.8] text-gray-400">{service.description}</p>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+      )}
     </section>
   );
 };
 
 export default Services;
+

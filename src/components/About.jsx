@@ -1,8 +1,18 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { Rocket } from 'lucide-react';
 import { fadeUpVariants, slideLeftVariants, slideRightVariants, staggerContainerVariants, staggerItemVariants } from '../utils/animationVariants';
+import SkeletonLoader from './SkeletonLoader';
 
 const About = () => {
+  const [loading, setLoading] = useState(true);
+
+  // Simulate loading delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <section 
@@ -60,13 +70,18 @@ const About = () => {
           </p>
 
           
-          <motion.div 
-            className="grid grid-cols-3 gap-6 mt-12"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={staggerContainerVariants}
-          >
+          {loading ? (
+            <div className="grid grid-cols-3 gap-6 mt-12">
+              <SkeletonLoader variant="stats" count={3} />
+            </div>
+          ) : (
+            <motion.div 
+              className="grid grid-cols-3 gap-6 mt-12"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={staggerContainerVariants}
+            >
             <motion.div 
               variants={staggerItemVariants}
               className="text-center p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/30 transition-all duration-300 hover:transform hover:-translate-y-1"
@@ -89,6 +104,7 @@ const About = () => {
               <span className="text-[1.3rem] text-gray-400 font-[500] block">Happy Clients</span>
             </motion.div>
           </motion.div>
+          )}
           
           <a href="#contact" 
              className="block mt-12 px-10 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl text-[1.5rem] text-white font-[600] transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/50 hover:scale-105 text-center">
