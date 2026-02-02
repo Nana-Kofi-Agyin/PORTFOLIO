@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
+import { UIContext } from '../context/UIContext';
 import { Menu, X } from 'lucide-react';
 
 /**
@@ -7,7 +9,7 @@ import { Menu, X } from 'lucide-react';
  * Sticky navigation with glassmorphism effect and mobile hamburger menu
  */
 const Navbar = () => {
-  const [activeLink, setActiveLink] = useState('#home');
+  const { currentSection, openModal } = useContext(UIContext);
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -37,7 +39,7 @@ const Navbar = () => {
         } border-b border-white/5`}
       >
         {/* Logo on the left */}
-        <a href="#home" onClick={() => setActiveLink('#home')}>
+        <a href="#home">
           <span className="text-[2.8rem] font-[800] bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent cursor-pointer transition-all duration-300 hover:scale-105">
             Dex
           </span>
@@ -45,34 +47,28 @@ const Navbar = () => {
 
         {/* Centered navigation links - Desktop */}
         <nav className="hidden md:flex gap-12 items-center absolute left-1/2 transform -translate-x-1/2">
-          {navLinks.map((link) => (
-            <a 
-              key={link.href}
-              href={link.href} 
-              onClick={() => setActiveLink(link.href)}
-              className={`text-[1.5rem] font-[500] transition-all duration-300 relative ${
-                activeLink === link.href ? 'text-white' : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              {link.name}
-              {activeLink === link.href && (
-                <motion.span 
-                  layoutId="activeLink"
-                  className="absolute -bottom-1 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 to-purple-500"
-                />
-              )}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const id = link.href.replace('#', '');
+            const isActive = currentSection === id;
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`text-[1.5rem] font-[500] transition-all duration-300 relative ${isActive ? 'text-purple-400 border-b-2 border-purple-400' : 'text-gray-400 hover:text-white'}`}
+              >
+                {link.name}
+              </a>
+            );
+          })}
         </nav>
 
         {/* Contact me button on the right - Desktop */}
-        <a 
-          href="#contact"
-          onClick={() => setActiveLink('#contact')}
+        <button
+          onClick={() => openModal()}
           className="hidden md:block px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[1.4rem] font-[600] rounded-full hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300 hover:scale-105"
         >
           Contact me
-        </a>
+        </button>
 
         {/* Mobile menu button */}
         <button 
@@ -112,7 +108,7 @@ const Navbar = () => {
                     <motion.a 
                       key={link.href}
                       href={link.href} 
-                      onClick={() => { setActiveLink(link.href); setIsOpen(false); }}
+                      onClick={() => { setIsOpen(false); }}
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
@@ -124,16 +120,15 @@ const Navbar = () => {
                 </div>
                 
                 {/* Contact Button in Mobile Menu */}
-                <motion.a 
-                  href="#contact"
-                  onClick={() => { setActiveLink('#contact'); setIsOpen(false); }}
+                <motion.button 
+                  onClick={() => { openModal(); setIsOpen(false); }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
                   className="block w-full py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[1.6rem] font-[600] rounded-xl hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300 text-center min-h-[56px] flex items-center justify-center"
                 >
                   Contact Me
-                </motion.a>
+                </motion.button>
               </div>
             </motion.nav>
           </>

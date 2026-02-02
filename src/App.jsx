@@ -1,4 +1,5 @@
 import './App.css'
+import { useContext } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -8,8 +9,15 @@ import Skills from './components/Skills'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import ScrollProgress from './components/ScrollProgress'
+import ContactModal from './components/ContactModal'
+import useSectionObserver from './hooks/useSectionObserver'
+import { UIContext } from './context/UIContext'
 
 function App() {
+  const { setCurrentSection } = useContext(UIContext);
+
+  useSectionObserver(['home', 'about', 'services', 'skills', 'projects', 'contact'], setCurrentSection);
+
   return (
     <div className="bg-[#0b0b1a] min-h-screen overflow-x-hidden">
       {/* Scroll Progress Bar */}
@@ -28,6 +36,8 @@ function App() {
         <Contact />
         <Footer />
       </div>
+
+      <ContactModal />
     </div>
   )
 }

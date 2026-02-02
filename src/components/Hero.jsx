@@ -1,5 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
+import { UIContext } from '../context/UIContext';
+import MagneticButton from './MagneticButton';
 import { Github, Linkedin, Twitter, Download, Sparkles } from 'lucide-react';
 import profileImage from '../assets/My Image.jpg';
 
@@ -13,12 +16,12 @@ const Hero = () => {
   const [loopNum, setLoopNum] = useState(0);
   const [typingSpeed, setTypingSpeed] = useState(150);
 
-  const titles = ['Software Engineer', 'Full Stack Developer', 'UI/UX Designer', 'Problem Solver'];
+  const titlesRef = useRef(['Software Engineer', 'Full Stack Developer', 'UI/UX Designer', 'Problem Solver']);
 
   useEffect(() => {
     const handleTyping = () => {
-      const i = loopNum % titles.length;
-      const fullText = titles[i];
+      const i = loopNum % titlesRef.current.length;
+      const fullText = titlesRef.current[i];
 
       setText(isDeleting 
         ? fullText.substring(0, text.length - 1)
@@ -37,7 +40,8 @@ const Hero = () => {
 
     const timer = setTimeout(handleTyping, typingSpeed);
     return () => clearTimeout(timer);
-  }, [text, isDeleting, loopNum, typingSpeed, titles]);
+  }, [text, isDeleting, loopNum, typingSpeed]);
+  const { openModal } = useContext(UIContext);
 
   return (
     <section id="home" className="min-h-screen flex items-center px-[5%] md:px-[9%] pt-24 md:pt-20 pb-12 relative overflow-hidden bg-[#0b0b1a]">
@@ -134,12 +138,9 @@ const Hero = () => {
             transition={{ delay: 0.7 }}
             className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
           >
-            <a 
-              href="#contact"
-              className="px-8 py-4 min-h-[56px] bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[1.5rem] font-[600] rounded-2xl hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center"
-            >
+            <MagneticButton className="px-8 py-4 min-h-[56px] bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[1.5rem] font-[600] rounded-2xl hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center" onClick={() => openModal()}>
               Let's Talk
-            </a>
+            </MagneticButton>
             <a 
               href="#"
               className="px-8 py-4 min-h-[56px] bg-white/5 border border-white/10 text-white text-[1.5rem] font-[600] rounded-2xl hover:bg-white/10 transition-all duration-300 active:scale-95 flex items-center justify-center gap-2"

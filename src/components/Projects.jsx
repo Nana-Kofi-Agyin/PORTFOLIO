@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 // eslint-disable-next-line no-unused-vars
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, MessageSquare, CheckSquare, Cloud, Calendar, Briefcase, Github, Pen } from 'lucide-react';
-import { fadeUpVariants, staggerContainerVariants, staggerItemVariants } from '../utils/animationVariants';
+import { fadeUpVariants, staggerContainerVariants } from '../utils/animationVariants';
 import SkeletonLoader from './SkeletonLoader';
 
 const Projects = () => {
@@ -13,21 +13,28 @@ const Projects = () => {
       title: "E-Commerce Platform",
       description: "Full-stack e-commerce with payment integration and admin dashboard",
       icon: ShoppingCart,
-      tags: ["React", "Node.js", "MongoDB"]
+      tags: ["React", "Node.js", "MongoDB"],
+      category: 'Full Stack'
     },
     {
       title: "Social Media App",
       description: "Real-time social platform with messaging and notifications",
       icon: MessageSquare,
-      tags: ["React", "Socket.io", "Express"]
+      tags: ["React", "Socket.io", "Express"],
+      category: 'Full Stack'
     },
     {
       title: "Portfolio Generator",
       description: "Tool to create stunning portfolios in minutes",
       icon: Briefcase,
-      tags: ["React", "TypeScript", "Vite"]
+      tags: ["React", "TypeScript", "Vite"],
+      category: 'Frontend'
     }
   ];
+
+  const categories = ['All', ...Array.from(new Set(projects.map(p => p.category)))];
+  const [filter, setFilter] = useState('All');
+  const filtered = filter === 'All' ? projects : projects.filter(p => p.category === filter);
 
   // Simulate loading delay for demonstration
   useEffect(() => {
@@ -63,49 +70,64 @@ const Projects = () => {
           <SkeletonLoader variant="card" count={3} />
         </div>
       ) : (
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={staggerContainerVariants}
-        >
-          {projects.map((project, index) => {
-            const IconComponent = project.icon;
-            return (
-              <motion.div
-                key={index}
-                variants={staggerItemVariants}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                className="relative rounded-2xl overflow-hidden group cursor-pointer bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/50 transition-colors duration-300"
-                style={{boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)'}}
-              >
-                <div className="w-full h-[28rem] bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-transparent flex items-center justify-center text-indigo-400 transition-transform duration-500 group-hover:scale-110">
-                  <IconComponent className="w-32 h-32" />
-                </div>
-                <div className="p-8">
-                  <h4 className="text-[2.2rem] font-[700] mb-3 text-white">{project.title}</h4>
-                  <p className="text-[1.4rem] mb-6 text-gray-400">{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tags.map((tag, idx) => (
-                      <span key={idx} className="px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full text-[1.2rem] border border-indigo-500/30">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex gap-4">
-                    <a href="#" className="flex-1 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg text-white text-[1.4rem] font-[600] text-center transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50">
-                      View Project
-                    </a>
-                    <a href="#" className="inline-flex justify-center items-center w-[4.5rem] bg-white/5 border border-white/10 rounded-lg text-gray-400 hover:text-indigo-400 hover:border-indigo-500/30 transition-all duration-300">
-                      <Github className="w-5 h-5" />
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+        <>
+          <div className="mb-8 flex gap-3 justify-center">
+            {categories.map((c) => (
+              <button key={c} onClick={() => setFilter(c)} className={`px-4 py-2 rounded-md text-[1.4rem] ${filter === c ? 'bg-indigo-600 text-white' : 'bg-white/5 text-gray-300'}`}>
+                {c}
+              </button>
+            ))}
+          </div>
+
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+            variants={staggerContainerVariants}
+          >
+            <AnimatePresence>
+              {filtered.map((project) => {
+                const IconComponent = project.icon;
+                return (
+                  <motion.div
+                    key={project.title}
+                    layout
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    whileHover={{ y: -8, transition: { duration: 0.25 } }}
+                    className="relative rounded-2xl overflow-hidden group cursor-pointer bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/50 transition-colors duration-300"
+                    style={{boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)'}}
+                  >
+                    <div className="w-full h-[28rem] bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-transparent flex items-center justify-center text-indigo-400 transition-transform duration-500 group-hover:scale-110">
+                      <IconComponent className="w-32 h-32" />
+                    </div>
+                    <div className="p-8">
+                      <h4 className="text-[2.2rem] font-[700] mb-3 text-white">{project.title}</h4>
+                      <p className="text-[1.4rem] mb-6 text-gray-400">{project.description}</p>
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {project.tags.map((tag, idx) => (
+                          <span key={idx} className="px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full text-[1.2rem] border border-indigo-500/30">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex gap-4">
+                        <a href="#" className="flex-1 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg text-white text-[1.4rem] font-[600] text-center transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50">
+                          View Project
+                        </a>
+                        <a href="#" className="inline-flex justify-center items-center w-[4.5rem] bg-white/5 border border-white/10 rounded-lg text-gray-400 hover:text-indigo-400 hover:border-indigo-500/30 transition-all duration-300">
+                          <Github className="w-5 h-5" />
+                        </a>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </motion.div>
+        </>
       )}
     </section>
   );
