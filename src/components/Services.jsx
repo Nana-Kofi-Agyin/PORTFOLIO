@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Code, Smartphone, Palette, Rocket, Wrench, Database } from 'lucide-react';
 import { fadeUpVariants, staggerContainerVariants, scaleInVariants } from '../utils/animationVariants';
 import SkeletonLoader from './SkeletonLoader';
+import Accordion from './Accordion';
 
 const Services = () => {
   const [loading, setLoading] = useState(true);
@@ -52,7 +53,7 @@ const Services = () => {
   return (
     <section 
       id="services" 
-      className="min-h-screen px-[9%] py-16 flex flex-col justify-center relative overflow-hidden"
+      className="min-h-screen px-[5%] sm:px-[7%] md:px-[9%] py-12 md:py-16 flex flex-col justify-center relative overflow-hidden"
     >
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-[120px]"></div>
       
@@ -62,21 +63,21 @@ const Services = () => {
         viewport={{ once: true, amount: 0.2 }}
         variants={fadeUpVariants}
       >
-        <h2 className="text-center text-[4.5rem] font-[800] mb-6">
+        <h2 className="text-center text-[3rem] sm:text-[3.5rem] md:text-[4.5rem] font-[800] mb-4 md:mb-6">
           My <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Services</span>
         </h2>
-        <p className="text-center text-[1.6rem] text-gray-400 mb-10 max-w-[60rem] mx-auto">
+        <p className="text-center text-[1.4rem] sm:text-[1.6rem] text-gray-400 mb-8 md:mb-10 max-w-[60rem] mx-auto px-4">
           Comprehensive solutions tailored to bring your digital vision to life
         </p>
       </motion.div>
       
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           <SkeletonLoader variant="service" count={6} />
         </div>
       ) : (
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="space-y-4"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
@@ -88,15 +89,16 @@ const Services = () => {
               <motion.div
                 key={index}
                 variants={scaleInVariants}
-                whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.3 } }}
-                className="bg-white/5 backdrop-blur-sm p-12 rounded-2xl text-center border border-white/10 transition-colors duration-300 hover:border-indigo-500/50 hover:bg-white/10 group"
-                style={{boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)'}}
               >
-                <div className="text-indigo-400 mb-6 transition-transform duration-300 group-hover:scale-110 flex justify-center">
-                  <IconComponent className="w-20 h-20" />
-                </div>
-                <h3 className="text-[2.2rem] font-[700] mb-6 text-white">{service.title}</h3>
-                <p className="text-[1.5rem] leading-[1.8] text-gray-400">{service.description}</p>
+                <Accordion 
+                  title={service.title} 
+                  icon={IconComponent}
+                  defaultOpen={index === 0}
+                >
+                  <p className="text-[1.3rem] sm:text-[1.4rem] md:text-[1.5rem] leading-relaxed text-gray-400">
+                    {service.description}
+                  </p>
+                </Accordion>
               </motion.div>
             );
           })}

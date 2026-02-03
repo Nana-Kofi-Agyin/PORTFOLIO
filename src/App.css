@@ -20,6 +20,50 @@
     -moz-osx-font-smoothing: grayscale;
     background: #0b0b1a;
     color: #ffffff;
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
+
+  /* Prevent horizontal scroll on all elements */
+  #root {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* Responsive font size adjustments for mobile */
+  @media (max-width: 768px) {
+    html {
+      font-size: 55%;
+    }
+    
+    /* Reduce vertical spacing on mobile */
+    section {
+      padding-top: 3rem !important;
+      padding-bottom: 3rem !important;
+      min-height: auto !important;
+    }
+    
+    /* Compact section heights for mobile */
+    #home {
+      min-height: 85vh !important;
+    }
+    
+    #skills, #projects, #services, #experience {
+      min-height: auto !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    html {
+      font-size: 50%;
+    }
+    
+    /* Further reduce spacing on small mobile */
+    section {
+      padding-top: 2rem !important;
+      padding-bottom: 2rem !important;
+    }
   }
 }
 
@@ -27,6 +71,28 @@
   /* Custom Radial Gradient */
   .bg-gradient-radial {
     background: radial-gradient(circle at center, var(--tw-gradient-stops));
+  }
+
+  /* Line clamp utilities for text truncation */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
 
@@ -85,10 +151,9 @@
 /* Smooth scrolling offset for fixed navbar */
 section {
   scroll-margin-top: 80px;
-  min-height: 100vh;
 }
 
-/* Responsive font sizes */
+/* Responsive font sizes and spacing */
 @media (max-width: 1200px) {
   html {
     font-size: 55%;
@@ -98,5 +163,35 @@ section {
 @media (max-width: 768px) {
   html {
     font-size: 50%;
+  }
+  
+  /* Compact mobile spacing - reduce padding globally */
+  section {
+    padding-top: clamp(2rem, 5vw, 3rem) !important;
+    padding-bottom: clamp(2rem, 5vw, 3rem) !important;
+  }
+  
+  /* Reduce heading margins */
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0.75em !important;
+  }
+  
+  /* Tighter line height for mobile readability */
+  p {
+    line-height: 1.5 !important;
+  }
+  
+  /* Reduce gap in flex/grid containers */
+  .gap-8, .gap-6 {
+    gap: 1rem !important;
+  }
+  
+  /* Hide scrollbar for horizontal scrollers */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

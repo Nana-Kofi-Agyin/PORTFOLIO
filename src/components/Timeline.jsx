@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
+import { Briefcase } from 'lucide-react';
+import Accordion from './Accordion';
 
 const timelineData = [
   {
@@ -27,36 +29,53 @@ const timelineData = [
 ];
 
 const Timeline = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-
   return (
-    <section id="experience" className="px-[9%] py-16 min-h-[60vh]">
-      <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="md:col-span-1 flex flex-col gap-4">
+    <section id="experience" className="px-[5%] sm:px-[7%] md:px-[9%] py-12 md:py-16 min-h-[60vh]">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="max-w-[900px] mx-auto"
+      >
+        <h2 className="text-center text-[3rem] sm:text-[3.5rem] md:text-[4.5rem] font-[800] mb-4 md:mb-6">
+          Work <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Experience</span>
+        </h2>
+        <p className="text-center text-[1.4rem] sm:text-[1.6rem] text-gray-400 mb-8 md:mb-10">
+          My professional journey and career milestones
+        </p>
+
+        <div className="space-y-4">
           {timelineData.map((item, idx) => (
-            <button
+            <Accordion
               key={item.year}
-              onClick={() => setActiveIndex(idx)}
-              className={`text-left p-4 rounded-lg transition-colors duration-200 ${activeIndex === idx ? 'bg-indigo-600/20 border-l-4 border-indigo-500 text-white' : 'bg-white/3 text-gray-300'}`}
+              title={`${item.role} at ${item.company}`}
+              icon={Briefcase}
+              defaultOpen={idx === 0}
             >
-              <div className="text-[1.6rem] font-[700]">{item.year}</div>
-              <div className="text-[1.2rem] text-gray-400">{item.company}</div>
-            </button>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-[1.2rem] text-purple-400 font-semibold">
+                  <span className="px-3 py-1 bg-purple-500/20 rounded-full border border-purple-500/30">
+                    {item.year}
+                  </span>
+                </div>
+                <p className="text-[1.3rem] sm:text-[1.4rem] text-gray-400 leading-relaxed">
+                  {item.details}
+                </p>
+                <div className="flex gap-2 flex-wrap pt-2">
+                  {item.tech.map((t) => (
+                    <span 
+                      key={t} 
+                      className="px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full text-[1.1rem] sm:text-[1.2rem] border border-indigo-500/30"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Accordion>
           ))}
         </div>
-
-        <div className="md:col-span-3 bg-white/5 p-8 rounded-2xl border border-white/10">
-          <motion.div key={activeIndex} initial={{ x: 40, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.4 }}>
-            <h4 className="text-[2rem] font-[800] mb-2">{timelineData[activeIndex].role} — {timelineData[activeIndex].company}</h4>
-            <p className="text-gray-400 mb-4">{timelineData[activeIndex].details}</p>
-            <div className="flex gap-2 flex-wrap">
-              {timelineData[activeIndex].tech.map((t) => (
-                <span key={t} className="px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full text-[1.2rem] border border-indigo-500/30">{t}</span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

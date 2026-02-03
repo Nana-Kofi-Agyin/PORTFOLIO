@@ -81,9 +81,9 @@ const SkillCard = ({ skill, size = "normal" }) => {
   const [isHovered, setIsHovered] = useState(false);
   
   const sizeClasses = {
-    small: "col-span-1 row-span-1 p-4",
-    normal: "col-span-1 row-span-1 p-5",
-    large: "col-span-1 md:col-span-2 row-span-1 p-6"
+    small: "col-span-1 row-span-1 p-3 sm:p-4",
+    normal: "col-span-1 row-span-1 p-3 sm:p-4 md:p-5",
+    large: "col-span-1 sm:col-span-2 row-span-1 p-4 sm:p-5 md:p-6"
   };
 
   return (
@@ -92,29 +92,33 @@ const SkillCard = ({ skill, size = "normal" }) => {
       whileHover={{ y: -4, scale: 1.02 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      className={`relative group bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-white/10 
+      className={`relative group bg-slate-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/10 
         shadow-lg transition-all duration-300 hover:border-purple-400/50 hover:bg-slate-900/70 
-        hover:shadow-purple-500/20 hover:shadow-2xl cursor-pointer min-h-[150px] ${sizeClasses[size]}`}
+        hover:shadow-purple-500/20 hover:shadow-2xl cursor-pointer min-h-[120px] sm:min-h-[140px] md:min-h-[150px] ${sizeClasses[size]}`}
     >
-      <SkillTooltip skill={skill} isHovered={isHovered} />
+      {/* Only show tooltip on larger screens to avoid mobile clutter */}
+      {typeof window !== 'undefined' && window.innerWidth > 768 && (
+        <SkillTooltip skill={skill} isHovered={isHovered} />
+      )}
       
-      <div className="flex flex-col items-center justify-center h-full text-center space-y-3">
+      <div className="flex flex-col items-center justify-center h-full text-center space-y-2 sm:space-y-3">
         <div className="relative">
           <div className="absolute inset-0 bg-purple-500/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          <SkillIcon iconName={skill.icon} className="w-14 h-14 relative z-10 transition-transform duration-300 group-hover:scale-110" />
+          <SkillIcon iconName={skill.icon} className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 relative z-10 transition-transform duration-300 group-hover:scale-110" />
         </div>
         
         <div>
-          <h4 className="text-white font-bold text-base mb-1">{skill.name}</h4>
+          <h4 className="text-white font-bold text-xs sm:text-sm md:text-base mb-1">{skill.name}</h4>
           {size === "large" && (
-            <p className="text-gray-400 text-xs max-w-[400px]">{skill.description}</p>
+            <p className="text-gray-400 text-[10px] sm:text-xs max-w-[400px] hidden sm:block">{skill.description}</p>
           )}
         </div>
 
         {skill.projects && skill.projects.length > 0 && (
-          <div className="flex items-center gap-1 text-[10px] text-purple-400">
-            <Sparkles className="w-3 h-3" />
-            <span>{skill.projects.length} project{skill.projects.length > 1 ? 's' : ''}</span>
+          <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-purple-400">
+            <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+            <span className="hidden sm:inline">{skill.projects.length} project{skill.projects.length > 1 ? 's' : ''}</span>
+            <span className="sm:hidden">{skill.projects.length}</span>
           </div>
         )}
       </div>
@@ -123,7 +127,11 @@ const SkillCard = ({ skill, size = "normal" }) => {
 };
 
 // Category Section Component
-const CategorySection = ({ category, categoryKey, icon: Icon }) => {
+const CategorySection = ({ category, categoryKey, icon: Icon, showAll, onToggleShowAll }) => {
+  // Limit skills to first 8 items if not showing all
+  const displayedSkills = showAll ? category.skills : category.skills.slice(0, 8);
+  const hasMore = category.skills.length > 8;
+
   return (
     <motion.div
       initial="hidden"
@@ -141,15 +149,31 @@ const CategorySection = ({ category, categoryKey, icon: Icon }) => {
       </div>
 
       <motion.div
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6"
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6"
         variants={staggerContainerVariants}
       >
-        {category.skills.map((skill, idx) => {
-          // Make the first skill in each category large for visual hierarchy
-          const size = idx === 0 ? "large" : "normal";
+        {displayedSkills.map((skill, idx) => {
+          // Make the first skill in each category large for visual hierarchy on desktop only
+          const size = idx === 0 && window.innerWidth > 768 ? "large" : "normal";
           return <SkillCard key={idx} skill={skill} size={size} />;
         })}
       </motion.div>
+
+      {/* Show More Button */}
+      {hasMore && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex justify-center mt-6"
+        >
+          <button
+            onClick={onToggleShowAll}
+            className="px-6 py-3 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 border border-purple-500/30 text-purple-300 rounded-xl hover:bg-gradient-to-r hover:from-purple-500/30 hover:to-indigo-500/30 hover:border-purple-400/50 transition-all duration-300 text-sm font-semibold"
+          >
+            {showAll ? 'Show Less' : `Show All ${category.skills.length} Skills`}
+          </button>
+        </motion.div>
+      )}
     </motion.div>
   );
 };
@@ -217,11 +241,19 @@ const LearningMarquee = () => {
 const Skills = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('frontend');
+  const [showAllByCategory, setShowAllByCategory] = useState({});
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 900);
     return () => clearTimeout(timer);
   }, []);
+
+  const toggleShowAll = (categoryKey) => {
+    setShowAllByCategory(prev => ({
+      ...prev,
+      [categoryKey]: !prev[categoryKey]
+    }));
+  };
 
   const categoryIcons = {
     languages: Code2,
@@ -255,7 +287,7 @@ const Skills = () => {
   return (
     <section
       id="skills"
-      className="min-h-[85vh] bg-[#1a1a2e] px-[9%] py-16 relative overflow-hidden"
+      className="min-h-[85vh] bg-[#1a1a2e] px-[5%] sm:px-[7%] md:px-[9%] py-12 md:py-16 relative overflow-hidden"
     >
       {/* Background Effects */}
       <div className="absolute top-0 left-1/2 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[120px]"></div>
@@ -267,15 +299,15 @@ const Skills = () => {
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
         variants={fadeUpVariants}
-        className="mb-16"
+        className="mb-12 md:mb-16"
       >
-        <h2 className="text-center text-[4.5rem] font-[800] mb-6">
+        <h2 className="text-center text-[3rem] sm:text-[3.5rem] md:text-[4.5rem] font-[800] mb-4 md:mb-6">
           My <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Skills</span>
         </h2>
-        <p className="text-center text-[1.6rem] text-gray-400 mb-4 max-w-[60rem] mx-auto">
+        <p className="text-center text-[1.4rem] sm:text-[1.6rem] text-gray-400 mb-3 md:mb-4 max-w-[60rem] mx-auto px-4">
           A comprehensive overview of my technical capabilities
         </p>
-        <p className="text-center text-sm text-purple-400 italic">
+        <p className="text-center text-xs sm:text-sm text-purple-400 italic px-4">
           💡 Hover over any skill to see which projects I&apos;ve used it in
         </p>
       </motion.div>
@@ -293,9 +325,9 @@ const Skills = () => {
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               variants={fadeUpVariants}
-              className="mb-12"
+              className="mb-8 md:mb-12"
             >
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4">
                 {tabs.map((tab) => {
                   const Icon = tab.icon;
                   return (
@@ -304,14 +336,14 @@ const Skills = () => {
                       onClick={() => setActiveTab(tab.id)}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className={`flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-base transition-all duration-300 ${
+                      className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-4 min-h-[44px] rounded-xl font-bold text-sm sm:text-base transition-all duration-300 ${
                         activeTab === tab.id
                           ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/50'
                           : 'bg-slate-900/50 text-gray-400 border border-white/10 hover:border-purple-400/50 hover:text-white'
                       }`}
                     >
-                      <Icon className="w-5 h-5" />
-                      {tab.label}
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <span className="hidden xs:inline sm:inline">{tab.label}</span>
                     </motion.button>
                   );
                 })}
@@ -336,6 +368,8 @@ const Skills = () => {
                         category={skillCategories[categoryKey]}
                         categoryKey={categoryKey}
                         icon={categoryIcons[categoryKey]}
+                        showAll={showAllByCategory[categoryKey] || false}
+                        onToggleShowAll={() => toggleShowAll(categoryKey)}
                       />
                     ))}
                 </motion.div>
