@@ -8,7 +8,7 @@ import { projects } from '../data/projectsData';
 
 const Projects = () => {
   const [loading, setLoading] = useState(true);
-  const [showAll, setShowAll] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const categories = ['All', ...Array.from(new Set(projects.flatMap(p => 
     Object.values(p.skillTags || {}).flat()
@@ -21,8 +21,8 @@ const Projects = () => {
         Object.values(p.skillTags || {}).flat().includes(filter)
       );
 
-  // Limit to top 3 projects on mobile initially
-  const displayedProjects = showAll ? filtered : filtered.slice(0, 3);
+  // Toggle between showing 3 projects and all projects
+  const displayedProjects = isExpanded ? filtered : filtered.slice(0, 3);
 
   // Simulate loading delay for demonstration
   useEffect(() => {
@@ -245,18 +245,18 @@ const Projects = () => {
             </AnimatePresence>
           </motion.div>
 
-          {/* View All Projects Button for Desktop */}
-          {!showAll && filtered.length > 3 && (
+          {/* View All / Show Less Toggle Button for Desktop */}
+          {filtered.length > 3 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="hidden md:flex justify-center mt-8"
             >
               <button
-                onClick={() => setShowAll(true)}
+                onClick={() => setIsExpanded(!isExpanded)}
                 className="px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-[1.4rem] font-[600] rounded-xl hover:shadow-lg hover:shadow-indigo-500/50 transition-all duration-300 hover:scale-105 active:scale-95"
               >
-                View All {filtered.length} Projects
+                {isExpanded ? 'Show Less' : `View All ${filtered.length} Projects`}
               </button>
             </motion.div>
           )}
