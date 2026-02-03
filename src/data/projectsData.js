@@ -11,7 +11,7 @@ export const projects = [
       tools: ["Git", "Docker"]
     },
     image: ShoppingCart,
-    githubLink: "https://github.com",
+    githubLink: "https://github.com/Nana-Kofi-Agyin/E-COMMERCE.git",
     liveDemo: "https://demo.com"
   },
   {
