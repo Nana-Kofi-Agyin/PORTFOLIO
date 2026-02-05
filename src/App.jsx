@@ -8,9 +8,7 @@ import Projects from './components/Projects'
 import Skills from './components/Skills'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
-import ScrollProgress from './components/ScrollProgress'
-import ScrollToTop from './components/ScrollToTop'
-import ContactModal from './components/ContactModal'
+import { ScrollProgress, ScrollToTop } from './components/ScrollUtils'
 import useSectionObserver from './hooks/useSectionObserver'
 import { UIContext } from './context/UIContext'
 
@@ -81,7 +79,7 @@ function App() {
         <Footer />
       </div>
 
-      <ContactModal />
+      {/* Contact modal removed: links navigate to contact section */}
       <ScrollToTop />
     </div>
   )

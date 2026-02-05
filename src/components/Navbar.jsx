@@ -9,7 +9,7 @@ import { Menu, X } from 'lucide-react';
  * Sticky navigation with glassmorphism effect and mobile hamburger menu
  */
 const Navbar = () => {
-  const { currentSection, openModal } = useContext(UIContext);
+  const { currentSection } = useContext(UIContext);
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -63,12 +63,12 @@ const Navbar = () => {
         </nav>
 
         {/* Contact me button on the right - Desktop */}
-        <button
-          onClick={() => openModal()}
+        <a
+          href="#contact"
           className="hidden md:block px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[1.4rem] font-[600] rounded-full hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300 hover:scale-105"
         >
           Contact me
-        </button>
+        </a>
 
         {/* Mobile menu button */}
         <button 
@@ -120,15 +120,16 @@ const Navbar = () => {
                 </div>
                 
                 {/* Contact Button in Mobile Menu */}
-                <motion.button 
-                  onClick={() => { openModal(); setIsOpen(false); }}
+                <motion.a 
+                  href="#contact"
+                  onClick={() => { setIsOpen(false); }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
                   className="block w-full py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[1.6rem] font-[600] rounded-xl hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] transition-all duration-300 text-center min-h-[56px] flex items-center justify-center"
                 >
                   Contact Me
-                </motion.button>
+                </motion.a>
               </div>
             </motion.nav>
           </>

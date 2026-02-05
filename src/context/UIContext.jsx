@@ -4,14 +4,10 @@ import React, { createContext, useState } from 'react';
 export const UIContext = createContext(null);
 
 export const UIProvider = ({ children }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSection, setCurrentSection] = useState('home');
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
   return (
-    <UIContext.Provider value={{ isModalOpen, openModal, closeModal, currentSection, setCurrentSection }}>
+    <UIContext.Provider value={{ currentSection, setCurrentSection }}>
       {children}
     </UIContext.Provider>
   );

@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { UIContext } from '../context/UIContext';
 import MagneticButton from './MagneticButton';
-import ScrollIndicator from './ScrollIndicator';
+import { ScrollIndicator } from './ScrollUtils';
 import { Github, Linkedin, Twitter, Download, Sparkles } from 'lucide-react';
 import profileImage from '../assets/My Image.jpg';
 
@@ -42,7 +42,17 @@ const Hero = () => {
     const timer = setTimeout(handleTyping, typingSpeed);
     return () => clearTimeout(timer);
   }, [text, isDeleting, loopNum, typingSpeed]);
-  const { openModal } = useContext(UIContext);
+  const scrollToContact = () => {
+    const targetElement = document.getElementById('contact');
+    if (targetElement) {
+      const navbar = document.querySelector('header');
+      const navbarHeight = navbar ? navbar.offsetHeight : 80;
+      const elementPosition = targetElement.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - navbarHeight - 20;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+      window.history.pushState(null, '', '#contact');
+    }
+  };
 
   return (
     <section id="home" className="min-h-[85vh] md:min-h-screen flex items-center px-[5%] md:px-[9%] pt-20 md:pt-24 pb-8 md:pb-12 relative overflow-hidden bg-[#0b0b1a]">
@@ -139,7 +149,7 @@ const Hero = () => {
             transition={{ delay: 0.7 }}
             className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto"
           >
-            <MagneticButton className="px-6 py-3 sm:px-7 sm:py-3.5 min-h-[50px] bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[1.35rem] sm:text-[1.45rem] font-[600] rounded-xl hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center" onClick={() => openModal()}>
+            <MagneticButton className="px-6 py-3 sm:px-7 sm:py-3.5 min-h-[50px] bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[1.35rem] sm:text-[1.45rem] font-[600] rounded-xl hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center" onClick={scrollToContact}>
               Let's Talk
             </MagneticButton>
             <a 
