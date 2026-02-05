@@ -1,5 +1,395 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
+
+/* ========== GLASSMORPHISM NAVIGATION BAR ========== */
+.eternova-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: var(--space-md) 9%;
+  
+  /* Logo's dark background with glassmorphism */
+  background: var(--eternova-glass-heavy);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border-bottom: 1px solid var(--eternova-border-glass);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), var(--eternova-glow-subtle);
+  transition: var(--transition-base);
+}
+
+.eternova-nav.scrolled {
+  padding: var(--space-sm) 9%;
+  background: rgba(10, 14, 26, 0.95);
+  backdrop-filter: blur(40px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), var(--eternova-glow-medium);
+}
+
+.eternova-nav-logo {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--eternova-electric-blue);
+  text-shadow: var(--eternova-glow-soft);
+  letter-spacing: 0.1em;
+  transition: var(--transition-base);
+}
+
+.eternova-nav-logo:hover {
+  text-shadow: var(--eternova-glow-strong);
+  transform: scale(1.05);
+  color: var(--eternova-bright-cyan);
+}
+
+/* Navigation Links with Star Decorative Underline */
+.eternova-nav-link {
+  position: relative;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--eternova-text-secondary);
+  padding: 1rem 1.8rem;
+  transition: var(--transition-base);
+  letter-spacing: 0.05em;
+  font-family: var(--font-primary);
+}
+
+/* Star Symbol Decorative Underline */
+.eternova-nav-link::before {
+  content: '✦';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  color: var(--eternova-electric-blue);
+  font-size: 1.2rem;
+  opacity: 0;
+  transition: var(--transition-base);
+  text-shadow: var(--eternova-glow-medium);
+}
+
+.eternova-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--eternova-electric-blue),
+    var(--eternova-bright-cyan),
+    var(--eternova-electric-blue),
+    transparent
+  );
+  transform: translateX(-50%);
+  transition: var(--transition-base);
+  box-shadow: var(--eternova-glow-soft);
+}
+
+.eternova-nav-link:hover,
+.eternova-nav-link.active {
+  color: var(--eternova-electric-blue);
+  text-shadow: var(--eternova-glow-subtle);
+}
+
+.eternova-nav-link:hover::before,
+.eternova-nav-link.active::before {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
+  animation: star-pulse 1.5s ease-in-out infinite;
+}
+
+.eternova-nav-link:hover::after,
+.eternova-nav-link.active::after {
+  width: 100%;
+}
+
+@keyframes star-pulse {
+  0%, 100% {
+    text-shadow: var(--eternova-glow-medium);
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    text-shadow: var(--eternova-glow-strong);
+    transform: translateX(-50%) scale(1.2);
+  }
+}
+
+/* ========== PROJECT CARDS WITH GLOWING BORDERS ========== */
+.eternova-project-card {
+  position: relative;
+  background: var(--eternova-glass-heavy);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid var(--eternova-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  transition: var(--transition-base);
+  overflow: hidden;
+}
+
+/* Logo's Blue Glow Border on Hover */
+.eternova-project-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    135deg,
+    var(--eternova-electric-blue),
+    var(--eternova-bright-cyan),
+    var(--eternova-deep-blue),
+    var(--eternova-electric-blue)
+  );
+  border-radius: var(--radius-lg);
+  opacity: 0;
+  z-index: -1;
+  transition: var(--transition-base);
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.eternova-project-card:hover::before {
+  opacity: 1;
+}
+
+.eternova-project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    var(--eternova-card-glow),
+    0 0 80px rgba(0, 201, 255, 0.4);
+  border-color: var(--eternova-electric-blue);
+}
+
+/* Inner Radial Glow Effect */
+.eternova-project-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: radial-gradient(
+    circle,
+    rgba(0, 229, 255, 0.2) 0%,
+    rgba(0, 201, 255, 0.1) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  transition: var(--transition-slow);
+  pointer-events: none;
+}
+
+.eternova-project-card:hover::after {
+  width: 500px;
+  height: 500px;
+}
+
+/* Text Shift to Primary White on Hover */
+.eternova-project-card h3,
+.eternova-project-card h4 {
+  color: var(--eternova-text-secondary);
+  transition: var(--transition-base);
+}
+
+.eternova-project-card:hover h3,
+.eternova-project-card:hover h4 {
+  color: var(--eternova-star-white);
+  text-shadow: var(--eternova-glow-subtle);
+}
+
+.eternova-project-card p {
+  color: var(--eternova-text-muted);
+  transition: var(--transition-base);
+  position: relative;
+  z-index: 1;
+}
+
+.eternova-project-card:hover p {
+  color: var(--eternova-text-secondary);
+}
+
+/* ========== COSMIC INPUT FIELDS ========== */
+.eternova-input {
+  width: 100%;
+  padding: 1.4rem 1.8rem;
+  font-size: 1.5rem;
+  font-family: var(--font-primary);
+  color: var(--eternova-text-primary);
+  
+  /* Dark background with thin blue border */
+  background: var(--eternova-cosmic-dark);
+  border: 1px solid var(--eternova-border-subtle);
+  border-radius: var(--radius-md);
+  
+  transition: var(--transition-base);
+  outline: none;
+}
+
+.eternova-input::placeholder {
+  color: var(--eternova-text-dim);
+  opacity: 0.7;
+}
+
+/* Focus State: Bright Blue + Outer Glow */
+.eternova-input:focus {
+  border-color: var(--eternova-bright-cyan);
+  background: rgba(0, 201, 255, 0.05);
+  box-shadow: 
+    var(--eternova-glow-medium),
+    inset 0 0 20px rgba(0, 201, 255, 0.1);
+}
+
+.eternova-textarea {
+  width: 100%;
+  padding: 1.4rem 1.8rem;
+  font-size: 1.5rem;
+  font-family: var(--font-body);
+  color: var(--eternova-text-primary);
+  background: var(--eternova-cosmic-dark);
+  border: 1px solid var(--eternova-border-subtle);
+  border-radius: var(--radius-md);
+  resize: vertical;
+  min-height: 150px;
+  transition: var(--transition-base);
+  outline: none;
+}
+
+.eternova-textarea::placeholder {
+  color: var(--eternova-text-dim);
+  opacity: 0.7;
+}
+
+.eternova-textarea:focus {
+  border-color: var(--eternova-bright-cyan);
+  background: rgba(0, 201, 255, 0.05);
+  box-shadow: 
+    var(--eternova-glow-medium),
+    inset 0 0 20px rgba(0, 201, 255, 0.1);
+}
+
+/* ========== HIGH-TECH LAUNCH BUTTON ========== */
+.eternova-launch-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 1.6rem 4rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--eternova-star-white);
+  
+  background: linear-gradient(
+    135deg,
+    var(--eternova-electric-blue) 0%,
+    var(--eternova-deep-blue) 50%,
+    var(--eternova-electric-blue) 100%
+  );
+  background-size: 200% 200%;
+  
+  border: 2px solid var(--eternova-electric-blue);
+  border-radius: var(--radius-md);
+  
+  cursor: pointer;
+  overflow: hidden;
+  transition: var(--transition-base);
+  
+  box-shadow: 
+    var(--eternova-glow-medium),
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Animated Scan Line Effect */
+.eternova-launch-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: var(--transition-slow);
+}
+
+.eternova-launch-btn:hover::before {
+  left: 100%;
+}
+
+/* Radial Energy Burst */
+.eternova-launch-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: radial-gradient(
+    circle,
+    rgba(0, 229, 255, 0.6) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  transition: var(--transition-base);
+}
+
+.eternova-launch-btn:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
+.eternova-launch-btn:hover {
+  background-position: 100% 50%;
+  box-shadow: 
+    var(--eternova-glow-ultra),
+    0 10px 40px rgba(0, 201, 255, 0.6),
+    inset 0 0 30px rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px) scale(1.02);
+  border-color: var(--eternova-bright-cyan);
+}
+
+.eternova-launch-btn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 
+    var(--eternova-glow-medium),
+    inset 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Launch Icon Animation */
+.eternova-launch-btn:hover .launch-icon {
+  animation: launch-sequence 0.6s ease-in-out;
+}
+
+@keyframes launch-sequence {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  30% {
+    transform: translateY(-5px) rotate(-10deg);
+  }
+  60% {
+    transform: translateY(-3px) rotate(5deg);
+  }
+}
 
 @layer base {
   * {
@@ -17,7 +407,7 @@
   }
 
   body {
-    font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-family: 'Rajdhani', 'Exo 2', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background: #0b0b1a;
@@ -27,6 +417,17 @@
     max-width: 100vw;
     position: relative;
   }
+
+  /* Heading typography using display font */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', 'Rajdhani', sans-serif;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+  }
+
+  h1 { font-size: clamp(3.5rem, 8vw, 6.5rem); font-weight: 800; }
+  h2 { font-size: clamp(2.8rem, 6vw, 4.8rem); font-weight: 700; }
+  h3 { font-size: clamp(2.2rem, 4vw, 3.2rem); }
 
   /* Prevent horizontal scroll on all elements */
   #root {
