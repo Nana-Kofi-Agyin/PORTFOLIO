@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, ExternalLink, Tag } from 'lucide-react';
-import { fadeUpVariants, staggerContainerVariants } from '../utils/animationVariants';
-import SkeletonLoader from './SkeletonLoader';
-import { projects } from '../data/projectsData';
+import { fadeUpVariants, staggerContainerVariants } from '../../utils/animationVariants';
+import SkeletonLoader from '../SkeletonLoader';
+import { projects } from '../../data/projectsData';
 
 const Projects = () => {
   const [loading, setLoading] = useState(true);

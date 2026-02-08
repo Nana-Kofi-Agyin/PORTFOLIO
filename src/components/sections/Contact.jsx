@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { FiSend } from 'react-icons/fi';
-import { fadeUpVariants, scaleInVariants } from '../utils/animationVariants';
+import { fadeUpVariants, scaleInVariants } from '../../utils/animationVariants';
 
 const Contact = () => {
 

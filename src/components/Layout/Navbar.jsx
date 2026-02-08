@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
-import { UIContext } from '../context/UIContext';
+import { UIContext } from '../../context/UIContext';
 import { Menu, X } from 'lucide-react';
 
 /**

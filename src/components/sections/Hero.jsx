@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
-import { UIContext } from '../context/UIContext';
-import MagneticButton from './MagneticButton';
-import { ScrollIndicator } from './ScrollUtils';
+import { UIContext } from '../../context/UIContext';
+import MagneticButton from '../MagneticButton';
+import { ScrollIndicator } from '../ScrollUtils';
 import { Github, Linkedin, Twitter, Download, Sparkles } from 'lucide-react';
-import profileImage from '../assets/My Image.jpg';
+import profileImage from '../../assets/My Image.jpg';
 
 /**
  * Hero Component

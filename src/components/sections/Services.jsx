@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { Code, Smartphone, Palette, Rocket, Wrench, Database } from 'lucide-react';
-import { fadeUpVariants, staggerContainerVariants, scaleInVariants } from '../utils/animationVariants';
-import SkeletonLoader from './SkeletonLoader';
-import Accordion from './Accordion';
+import { fadeUpVariants, staggerContainerVariants, scaleInVariants } from '../../utils/animationVariants';
+import SkeletonLoader from '../SkeletonLoader';
+import Accordion from '../Accordion';
 
 const Services = () => {
   const [loading, setLoading] = useState(true);

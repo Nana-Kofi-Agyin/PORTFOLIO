@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { fadeUpVariants, staggerContainerVariants, staggerItemVariants } from '../utils/animationVariants';
+import { fadeUpVariants, staggerContainerVariants, staggerItemVariants } from '../../utils/animationVariants';
 import { Code2, Server, Database, Wrench, Lightbulb, Sparkles } from 'lucide-react';
-import SkeletonLoader from './SkeletonLoader';
-import { skillCategories, softSkills, currentlyLearning } from '../data/skillsData';
+import SkeletonLoader from '../SkeletonLoader';
+import { skillCategories, softSkills, currentlyLearning } from '../../data/skillsData';
 import * as SimpleIcons from 'simple-icons';
 
 // Helper function to get icon from simple-icons

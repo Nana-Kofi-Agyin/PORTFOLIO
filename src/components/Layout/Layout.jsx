@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Navbar from './Navbar';
-import Footer from './Footer';
-import { ScrollToTop } from './ScrollUtils';
+import Footer from '../Footer';
+import { ScrollToTop } from '../ScrollUtils';
 
 /**
  * Layout Component
