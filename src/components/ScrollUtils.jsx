@@ -43,26 +43,31 @@ export const ScrollIndicator = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1 }}
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.9, duration: 0.5 }}
       className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer z-20"
-      onClick={handleClick}
     >
-      <div className="flex flex-col items-center gap-2">
-        <span className="text-[1.2rem] text-gray-400 font-[500]">Scroll Down</span>
+      <button
+        onClick={handleClick}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleClick();
+          }
+        }}
+        aria-label="Scroll to next section"
+        className="flex items-center justify-center w-12 h-12 rounded-full bg-white/4 border border-white/8 shadow-sm hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+      >
+        <span className="sr-only">Scroll</span>
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            ease: 'easeInOut'
-          }}
-          className="w-10 h-10 rounded-full border-2 border-indigo-400/50 flex items-center justify-center hover:border-indigo-400 transition-colors"
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }}
+          className="text-indigo-400"
         >
-          <ChevronDown className="w-5 h-5 text-indigo-400" />
+          <ChevronDown className="w-5 h-5" />
         </motion.div>
-      </div>
+      </button>
     </motion.div>
   );
 };

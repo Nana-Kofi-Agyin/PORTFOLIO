@@ -32,6 +32,23 @@ const Projects = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Listen for skill clicks from Skills section to filter projects
+  useEffect(() => {
+    const handler = (e) => {
+      const skill = e?.detail?.skill;
+      if (!skill) return;
+      setFilter(skill);
+      setIsExpanded(true);
+      const el = document.getElementById('projects');
+      if (el) {
+        // small timeout to allow setState to render if needed
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+      }
+    };
+    window.addEventListener('filterProjects', handler);
+    return () => window.removeEventListener('filterProjects', handler);
+  }, []);
+
   return (
     <section 
       id="projects" 
@@ -96,9 +113,16 @@ const Projects = () => {
                     >
                       {/* Maintain 16:9 aspect ratio for images */}
                       <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-                        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-transparent flex items-center justify-center text-indigo-400 transition-transform duration-500 group-hover:scale-110">
-                          <IconComponent className="w-24 h-24" />
-                        </div>
+                        {typeof IconComponent === 'string' ? (
+                          <div className="absolute inset-0 overflow-hidden rounded-t-2xl">
+                            <img src={IconComponent} alt={project.title} className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/6 to-transparent pointer-events-none" />
+                          </div>
+                        ) : (
+                          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-transparent flex items-center justify-center text-indigo-400 transition-transform duration-500 group-hover:scale-110">
+                            <IconComponent className="w-24 h-24" />
+                          </div>
+                        )}
                       </div>
                       <div className="p-5">
                         <h4 className="text-[1.8rem] font-[700] mb-2 text-white line-clamp-1">{project.title}</h4>
@@ -127,12 +151,12 @@ const Projects = () => {
                         {/* Touch-friendly buttons */}
                         <div className="flex gap-3">
                           <a 
-                            href={project.liveDemo} 
+                            href={project.viewSite} 
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex-1 py-3 min-h-[44px] bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg text-white text-[1.3rem] font-[600] text-center transition-all duration-300 flex items-center justify-center gap-2 active:scale-95"
                           >
-                            View
+                            View Site
                             <ExternalLink className="w-3.5 h-3.5" />
                           </a>
                           <a 
@@ -172,7 +196,7 @@ const Projects = () => {
             variants={staggerContainerVariants}
           >
             <AnimatePresence>
-              {displayedProjects.map((project) => {
+                {displayedProjects.map((project) => {
                 const IconComponent = project.image;
                 return (
                   <motion.div
@@ -188,8 +212,15 @@ const Projects = () => {
                     {/* Maintain 16:9 aspect ratio for images */}
                     <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-transparent flex items-center justify-center text-indigo-400 transition-transform duration-500 group-hover:scale-110">
-                        <IconComponent className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32" />
-                      </div>
+                        {typeof IconComponent === 'string' ? (
+                          <div className="absolute inset-0 overflow-hidden rounded-t-2xl">
+                            <img src={IconComponent} alt={project.title} className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/6 to-transparent pointer-events-none" />
+                          </div>
+                        ) : (
+                          <IconComponent className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32" />
+                        )}
+                        </div>
                     </div>
                     <div className="p-5 sm:p-6 md:p-8">
                       <h4 className="text-[1.8rem] sm:text-[2rem] md:text-[2.2rem] font-[700] mb-2 md:mb-3 text-white line-clamp-1">{project.title}</h4>
@@ -220,12 +251,12 @@ const Projects = () => {
                       {/* Touch-friendly buttons with minimum 44x44px hit area */}
                       <div className="flex gap-3 md:gap-4">
                         <a 
-                          href={project.liveDemo} 
+                          href={project.viewSite} 
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex-1 py-3 sm:py-3.5 min-h-[44px] bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg text-white text-[1.3rem] sm:text-[1.4rem] font-[600] text-center transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50 flex items-center justify-center gap-2 active:scale-95"
                         >
-                          View Project
+                          View Site
                           <ExternalLink className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         </a>
                         <a 

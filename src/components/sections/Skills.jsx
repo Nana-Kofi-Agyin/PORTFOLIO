@@ -95,6 +95,23 @@ const SkillCard = ({ skill, size = "normal" }) => {
       className={`relative group bg-slate-900/50 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/10 
         shadow-lg transition-all duration-300 hover:border-purple-400/50 hover:bg-slate-900/70 
         hover:shadow-purple-500/20 hover:shadow-2xl cursor-pointer min-h-[120px] sm:min-h-[140px] md:min-h-[150px] ${sizeClasses[size]}`}
+      tabIndex={0}
+      role="button"
+      onClick={() => {
+        // Dispatch a global event to filter projects by this skill
+        window.dispatchEvent(new CustomEvent('filterProjects', { detail: { skill: skill.name } }));
+        // Also navigate to projects section
+        const el = document.getElementById('projects');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          window.dispatchEvent(new CustomEvent('filterProjects', { detail: { skill: skill.name } }));
+          const el = document.getElementById('projects');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }}
     >
       {/* Only show tooltip on larger screens to avoid mobile clutter */}
       {typeof window !== 'undefined' && window.innerWidth > 768 && (

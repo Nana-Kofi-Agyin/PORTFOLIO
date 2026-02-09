@@ -1,4 +1,5 @@
 import { ShoppingCart, CheckSquare, BarChart3, Cloud, Briefcase, MessageCircle } from 'lucide-react';
+import ecommerceImg from '../assets/ecommerce.png';
 
 export const projects = [
   {
@@ -6,13 +7,14 @@ export const projects = [
     description: "Full-stack MERN e-commerce application with payment integration and admin dashboard.",
     tags: ["React", "Node.js", "MongoDB", "Express", "Redux", "JavaScript", "HTML5"],
     skillTags: {
-      frontend: ["React", "Redux", "JavaScript", "HTML5"],
+      frontend: ["React",  "JavaScript", "HTML5"],
       backend: ["Node.js", "Express", "MongoDB"],
-      tools: ["Git", "Docker"]
+      tools: ["Git", "Vercel"]
     },
-    image: ShoppingCart,
-    githubLink: "https://github.com/Nana-Kofi-Agyin/E-COMMERCE.git",
-    liveDemo: "https://demo.com"
+    // Use the image URL for the e-commerce project; consumer will handle rendering
+    image: ecommerceImg,
+    githubLink: "https://github.com/Sprint-Force/Sanich-Farms.git",
+    viewSite: "https://sanich-farms.vercel.app/"
   },
   {
     title: "Task Management App",
@@ -25,7 +27,7 @@ export const projects = [
     },
     image: CheckSquare,
     githubLink: "https://github.com",
-    liveDemo: "https://demo.com"
+    viewSite: "https://demo.com"
   },
   {
     title: "Social Media Dashboard",
@@ -38,7 +40,7 @@ export const projects = [
     },
     image: BarChart3,
     githubLink: "https://github.com",
-    liveDemo: "https://demo.com"
+    viewSite: "https://demo.com"
   },
   {
     title: "Weather App",
@@ -51,7 +53,7 @@ export const projects = [
     },
     image: Cloud,
     githubLink: "https://github.com",
-    liveDemo: "https://demo.com"
+    viewSite: "https://demo.com"
   },
   {
     title: "Portfolio Website",
@@ -64,7 +66,7 @@ export const projects = [
     },
     image: Briefcase,
     githubLink: "https://github.com",
-    liveDemo: "https://demo.com"
+    viewSite: "https://demo.com"
   },
   {
     title: "Chat Application",
@@ -77,6 +79,6 @@ export const projects = [
     },
     image: MessageCircle,
     githubLink: "https://github.com",
-    liveDemo: "https://demo.com"
+    viewSite: "https://demo.com"
   }
 ];
