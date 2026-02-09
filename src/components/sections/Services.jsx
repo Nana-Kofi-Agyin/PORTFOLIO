@@ -72,7 +72,7 @@ const Services = () => {
       </motion.div>
       
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="space-y-4">
           <SkeletonLoader variant="service" count={6} />
         </div>
       ) : (
