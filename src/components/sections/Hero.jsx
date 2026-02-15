@@ -152,8 +152,12 @@ const Hero = () => {
             <MagneticButton className="px-6 py-3 sm:px-7 sm:py-3.5 min-h-[50px] bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[1.35rem] sm:text-[1.45rem] font-[600] rounded-xl hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center" onClick={scrollToContact}>
               Let's Talk
             </MagneticButton>
-            <a 
-              href="#"
+            <a
+              href="/Nana_Kofi_Agyin_CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              download="Nana_Kofi_Agyin_CV.pdf"
+              aria-label="Download CV"
               className="px-6 py-3 sm:px-7 sm:py-3.5 min-h-[50px] bg-white/5 border border-white/10 text-white text-[1.35rem] sm:text-[1.45rem] font-[600] rounded-xl hover:bg-white/10 transition-all duration-300 active:scale-95 flex items-center justify-center gap-2"
             >
               <Download className="w-4 h-4 sm:w-5 sm:h-5" />
