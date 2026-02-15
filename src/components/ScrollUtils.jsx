@@ -1,4 +1,5 @@
 import React from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUp, ChevronDown } from 'lucide-react';
 import useScrollMotion from '../hooks/useScrollMotion';
@@ -57,7 +58,7 @@ export const ScrollIndicator = () => {
           }
         }}
         aria-label="Scroll to next section"
-        className="flex items-center justify-center w-12 h-12 rounded-full bg-white/4 border border-white/8 shadow-sm hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+        className="flex items-center justify-center w-14 h-14 rounded-full bg-white/4 border border-white/8 shadow-sm hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
       >
         <span className="sr-only">Scroll</span>
         <motion.div

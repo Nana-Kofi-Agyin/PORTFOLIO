@@ -10,10 +10,6 @@ const Projects = () => {
   const [loading, setLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const categories = ['All', ...Array.from(new Set(projects.flatMap(p => 
-    Object.values(p.skillTags || {}).flat()
-  )))];
-  
   const [filter, setFilter] = useState('All');
   const filtered = filter === 'All' 
     ? projects 
