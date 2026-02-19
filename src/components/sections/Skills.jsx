@@ -304,7 +304,7 @@ const Skills = () => {
   return (
     <section
       id="skills"
-      className="min-h-[85vh] bg-[#1a1a2e] px-[5%] sm:px-[7%] md:px-[9%] py-12 md:py-16 relative overflow-hidden"
+      className="min-h-[85vh] bg-gradient-to-b from-[#0b0b1a] via-[#1a1a2e] to-[#0b0b1a] px-[5%] sm:px-[7%] md:px-[9%] py-12 md:py-16 relative overflow-hidden"
     >
       {/* Background Effects */}
       <div className="absolute top-0 left-1/2 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[120px]"></div>

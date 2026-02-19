@@ -2,7 +2,7 @@ import { FiGithub, FiLinkedin, FiTwitter } from 'react-icons/fi';
 
 const Footer = () => {
   return (
-    <footer className="bg-[#0f0f23] px-[5%] sm:px-[7%] md:px-[9%] py-8 sm:py-10 md:py-12 border-t border-white/5">
+    <footer className="bg-[#0b0b1a] px-[5%] sm:px-[7%] md:px-[9%] py-8 sm:py-10 md:py-12 border-t border-white/[0.04]">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-8">
         <p className="text-[1.3rem] sm:text-[1.4rem] text-gray-400 text-center sm:text-left">
           © 2026 <span className="text-indigo-400 font-[600]">Dex</span>. Crafted with passion.

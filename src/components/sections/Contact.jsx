@@ -9,7 +9,7 @@ const Contact = () => {
   return (
     <section 
       id="contact" 
-      className="min-h-screen bg-[#1a1a2e] px-[5%] sm:px-[7%] md:px-[9%] py-12 md:py-16 flex items-center justify-center relative overflow-hidden"
+      className="min-h-screen bg-gradient-to-b from-[#0b0b1a] via-[#1a1a2e] to-[#0b0b1a] px-[5%] sm:px-[7%] md:px-[9%] py-12 md:py-16 flex items-center justify-center relative overflow-hidden"
     >
       <div className="absolute top-0 left-1/2 w-[40rem] h-[40rem] bg-indigo-500/20 rounded-full filter blur-[150px]"></div>
       
