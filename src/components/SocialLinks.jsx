@@ -1,4 +1,5 @@
 import { site, isPlaceholder } from '../data/siteConfig';
+import Val from './Val';
 
 const items = [
   { label: 'GitHub', href: site.github },
@@ -11,14 +12,9 @@ const SocialLinks = ({ className = '' }) => (
     {items.map(({ label, href }) => (
       <li key={label}>
         {isPlaceholder(href) ? (
-          <span className="text-[1.4rem] text-amber-300">{href}</span>
+          <Val v={href} />
         ) : (
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[1.5rem] text-gray-200 underline underline-offset-4 hover:text-white"
-          >
+          <a href={href} target="_blank" rel="noopener noreferrer">
             {label}
             <span className="sr-only"> (opens in a new tab)</span>
           </a>

@@ -1,97 +1,43 @@
-// eslint-disable-next-line no-unused-vars
-import { motion } from 'framer-motion';
-import { Code, Smartphone, Palette, Rocket, Wrench, Database } from 'lucide-react';
-import { fadeUpVariants, staggerContainerVariants, scaleInVariants } from '../../utils/animationVariants';
-import Accordion from '../Accordion';
+import { services } from '../../data/servicesData';
+import { Link } from '../../router';
+import Val from '../Val';
 
-const Services = () => {
+const Row = ({ label, children }) => (
+  <div className="grid sm:grid-cols-[8rem_1fr] gap-1 sm:gap-6 py-3 border-t border-line">
+    <dt className="text-muted text-[0.9375rem]">{label}</dt>
+    <dd className="m-0">{children}</dd>
+  </div>
+);
 
-  const services = [
-    {
-      icon: Code,
-      title: "Web Development",
-      description: "Building responsive and modern web applications using the latest technologies and best practices."
-    },
-    {
-      icon: Smartphone,
-      title: "Mobile Apps",
-      description: "Creating cross-platform mobile applications with seamless user experiences."
-    },
-    {
-      icon: Palette,
-      title: "UI/UX Design",
-      description: "Designing beautiful and intuitive interfaces that users love to interact with."
-    },
-    {
-      icon: Rocket,
-      title: "Performance",
-      description: "Optimizing applications for speed, efficiency, and scalability."
-    },
-    {
-      icon: Wrench,
-      title: "Maintenance",
-      description: "Providing ongoing support and updates to keep your applications running smoothly."
-    },
-    {
-      icon: Database,
-      title: "Cloud Services",
-      description: "Deploying and managing applications on cloud platforms for maximum reliability."
-    }
-  ];
+const Services = () => (
+  <section id="services" aria-labelledby="services-title" className="border-t border-line">
+    <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
+      <h2 id="services-title">Services</h2>
+      <p className="mt-4 text-muted max-w-[60ch]">
+        Three things I can build for you, each with a project to show for it.
+      </p>
 
-
-  return (
-    <section 
-      id="services" 
-      className="min-h-screen px-[5%] sm:px-[7%] md:px-[9%] py-12 md:py-16 flex flex-col justify-center relative overflow-hidden"
-    >
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-[120px]"></div>
-      
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={fadeUpVariants}
-      >
-        <h2 className="text-center text-[3rem] sm:text-[3.5rem] md:text-[4.5rem] font-[800] mb-4 md:mb-6">
-          My <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Services</span>
-        </h2>
-        <p className="text-center text-[1.4rem] sm:text-[1.6rem] text-gray-400 mb-8 md:mb-10 max-w-[60rem] mx-auto px-4">
-          Comprehensive solutions tailored to bring your digital vision to life
-        </p>
-      </motion.div>
-      
-      {(        <motion.div 
-          className="space-y-4"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={staggerContainerVariants}
-        >
-          {services.map((service, index) => {
-            const IconComponent = service.icon;
-            return (
-              <motion.div
-                key={index}
-                variants={scaleInVariants}
-              >
-                <Accordion 
-                  title={service.title} 
-                  icon={IconComponent}
-                  defaultOpen={index === 0}
-                >
-                  <p className="text-[1.3rem] sm:text-[1.4rem] md:text-[1.5rem] leading-relaxed text-gray-400">
-                    {service.description}
-                  </p>
-                </Accordion>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-      )}
-    </section>
-  );
-};
+      <ol className="mt-10 m-0 p-0 list-none space-y-12">
+        {services.map((s, i) => (
+          <li key={i}>
+            <h3><Val v={s.title} /></h3>
+            <dl className="mt-4 m-0 border-b border-line max-w-[65ch]">
+              <Row label="Who it is for"><Val v={s.forWhom} /></Row>
+              <Row label="What you get"><Val v={s.youGet} /></Row>
+              <Row label="Timeline"><Val v={s.timeline} /></Row>
+              <Row label="Proof">
+                {s.project ? (
+                  <Link to={`/projects/${s.project.slug}`}>{s.project.title}</Link>
+                ) : (
+                  <Val v="[PLACEHOLDER: link to the project that proves this]" />
+                )}
+              </Row>
+            </dl>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+);
 
 export default Services;
-

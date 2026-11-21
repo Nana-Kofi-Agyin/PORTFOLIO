@@ -1,60 +1,63 @@
-﻿import { Download } from 'lucide-react';
-import { site, isPlaceholder } from '../../data/siteConfig';
+import { site } from '../../data/siteConfig';
+import Val from '../Val';
 import SocialLinks from '../SocialLinks';
-import profileImage from '../../assets/My Image.jpg';
+import { Link } from '../../router';
+// TODO: replace this file with a professional headshot (4:5 portrait, shoulders up,
+// plain background, at least 640x800). Keep the same filename or update this import.
+import headshot from '../../assets/headshot-placeholder.jpg';
 
 const Hero = () => (
-  <section
-    id="home"
-    className="min-h-[85vh] md:min-h-screen flex items-center px-[5%] md:px-[9%] pt-28 pb-12 bg-[#0b0b1a]"
-  >
-    <div className="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
-      <div className="space-y-5 text-center lg:text-left flex flex-col items-center lg:items-start">
-        <h1 className="text-[3.2rem] sm:text-[4rem] md:text-[5rem] font-[800] leading-tight">
-          {site.name}
+  <section aria-labelledby="hero-title" className="mx-auto max-w-4xl px-6 pt-12 pb-20 md:pt-20 md:pb-28">
+    <div className="grid gap-10 md:grid-cols-[1fr_15rem] md:gap-16 items-start">
+      <div>
+        <h1 id="hero-title" className="max-w-[22ch]">
+          {site.name}, full-stack developer building{' '}
+          <Val v="[PLACEHOLDER: type of products]" /> for{' '}
+          <Val v="[PLACEHOLDER: type of clients]" />.
         </h1>
-        <p className="text-[1.8rem] md:text-[2.2rem] text-gray-200">
-          {site.role} in {site.location}.
+
+        <p className="mt-6 text-[1.25rem] max-w-[48ch]">
+          I work with React, Node.js and MongoDB.{' '}
+          <Val v="[PLACEHOLDER: one concrete detail, such as an industry or a real result]" />
         </p>
-        <p className="text-[1.5rem] md:text-[1.6rem] text-gray-300 leading-relaxed max-w-[60rem]">
-          I build web apps with React, Node.js and MongoDB.
+
+        <p className="mt-6 flex items-start gap-2 text-muted">
+          <span aria-hidden="true" className="mt-[0.6em] inline-block h-2 w-2 shrink-0 rounded-full bg-accent" />
+          <span>
+            Based in {site.location}. <Val v={site.availability} />{' '}
+            <span className="text-[0.875rem]">(Updated {site.availabilityUpdated})</span>
+          </span>
         </p>
-        <p className="text-[1.4rem] text-gray-300">
-          {isPlaceholder(site.availability) ? (
-            <span className="text-amber-300">{site.availability}</span>
-          ) : (
-            site.availability
-          )}
-        </p>
-        <SocialLinks className="justify-center lg:justify-start" />
-        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-          <a
-            href="#contact"
-            className="px-7 py-3.5 min-h-[48px] bg-white text-black text-[1.5rem] font-[600] rounded-lg flex items-center justify-center"
+
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <Link
+            to="/#work"
+            className="inline-flex items-center min-h-[44px] px-5 rounded-md bg-accent text-on-accent font-semibold no-underline hover:text-on-accent hover:opacity-90"
           >
-            Get in touch
-          </a>
+            View projects
+          </Link>
           <a
             href={site.cv}
             download="Nana_Kofi_Agyin_CV.pdf"
-            className="px-7 py-3.5 min-h-[48px] border border-white/30 text-white text-[1.5rem] font-[600] rounded-lg flex items-center justify-center gap-2"
+            className="inline-flex items-center min-h-[44px] px-5 rounded-md border border-line font-semibold no-underline hover:border-accent"
           >
-            <Download className="w-5 h-5" aria-hidden="true" />
             Download CV
           </a>
         </div>
+
+        <SocialLinks className="mt-6 text-[0.9375rem]" />
       </div>
 
-      <div className="flex justify-center lg:justify-end w-full">
-        <img
-          src={profileImage}
-          alt={`Portrait of ${site.name}`}
-          width="960" height="1280"
-          fetchPriority="high"
-          decoding="async"
-          className="w-[220px] sm:w-[280px] md:w-[360px] lg:w-[450px] h-auto aspect-[3/4] object-cover rounded-2xl border border-white/10"
-        />
-      </div>
+      <img
+        src={headshot}
+        alt={`Portrait of ${site.name}`}
+        width="640"
+        height="800"
+        sizes="(max-width: 768px) 160px, 240px"
+        fetchPriority="high"
+        decoding="async"
+        className="w-40 md:w-full h-auto aspect-[4/5] object-cover object-top rounded-md border border-line order-first md:order-last"
+      />
     </div>
   </section>
 );

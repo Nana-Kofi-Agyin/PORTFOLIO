@@ -1,66 +1,69 @@
+import { useEffect, useRef } from 'react';
 import './App.css';
-import { useContext, useEffect } from 'react';
-import Navbar from './components/Layout/Navbar';
-import Hero from './components/sections/Hero';
-import About from './components/sections/About';
-import Services from './components/sections/Services';
-import Projects from './components/sections/Projects';
-import Skills from './components/sections/Skills';
-import Contact from './components/sections/Contact';
+import Header from './components/Layout/Navbar';
 import Footer from './components/Layout/Footer';
-import useSectionObserver from './hooks/useSectionObserver';
-import { UIContext } from './context/UIContext';
+import Analytics from './components/Analytics';
+import Home from './pages/Home';
+import AllProjects from './pages/AllProjects';
+import CaseStudy from './pages/CaseStudy';
+import Cv from './pages/Cv';
+import NotFound from './pages/NotFound';
+import { useLocation } from './routerHooks';
 
-const SECTION_IDS = ['home', 'about', 'services', 'skills', 'projects', 'contact'];
+const HOME_TITLE = 'Nana Kofi Agyin | Full-stack developer in Accra';
+
+function Page({ path }) {
+  const clean = path.replace(/\/+$/, '') || '/';
+  if (clean === '/') return <Home />;
+  if (clean === '/projects') return <AllProjects />;
+  if (clean === '/cv') return <Cv />;
+  const m = clean.match(/^\/projects\/([\w-]+)$/);
+  if (m) return <CaseStudy slug={m[1]} />;
+  return <NotFound />;
+}
 
 function App() {
-  const { setCurrentSection } = useContext(UIContext);
+  const loc = useLocation();
+  const first = useRef(true);
+  const lastPath = useRef(loc.path);
 
-  useSectionObserver(SECTION_IDS, setCurrentSection);
-
-  // In-page anchors: offset for the fixed header, honour reduced motion,
-  // and move keyboard focus to the target section.
+  // Scroll and focus handling for client-side navigation.
   useEffect(() => {
-    const handleAnchorClick = (e) => {
-      const link = e.target.closest('a[href^="#"]');
-      if (!link) return;
-      const href = link.getAttribute('href');
-      if (!href || href === '#') return;
+    const pathChanged = lastPath.current !== loc.path;
+    lastPath.current = loc.path;
+    if (loc.path === '/' && pathChanged) document.title = HOME_TITLE;
 
-      const target = document.getElementById(href.slice(1));
-      if (!target) return;
-      e.preventDefault();
-
-      const header = document.querySelector('header');
-      const offset = (header ? header.offsetHeight : 80) + 20;
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      window.scrollTo({
-        top: target.getBoundingClientRect().top + window.scrollY - offset,
-        behavior: reduce ? 'auto' : 'smooth',
-      });
-      target.setAttribute('tabindex', '-1');
-      target.focus({ preventScroll: true });
-      window.history.pushState(null, '', href);
-    };
-
-    document.addEventListener('click', handleAnchorClick);
-    return () => document.removeEventListener('click', handleAnchorClick);
-  }, []);
+    if (loc.hash) {
+      const el = document.getElementById(loc.hash.slice(1));
+      if (el) {
+        el.scrollIntoView();
+        el.setAttribute('tabindex', '-1');
+        el.focus({ preventScroll: true });
+        return;
+      }
+    }
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    const h1 = document.querySelector('main h1');
+    if (h1) {
+      h1.setAttribute('tabindex', '-1');
+      h1.focus({ preventScroll: true });
+    }
+  }, [loc.key, loc.path, loc.hash]);
 
   return (
-    <div className="bg-[#0b0b1a] min-h-screen">
-      <a href="#main" className="skip-link">Skip to main content</a>
-      <Navbar />
+    <>
+      <Analytics />
+      <a href="#main" className="skip-link no-print">Skip to main content</a>
+      <Header />
       <main id="main">
-        <Hero />
-        <About />
-        <Services />
-        <Skills />
-        <Projects />
-        <Contact />
+        <Page path={loc.path} />
       </main>
       <Footer />
-    </div>
+    </>
   );
 }
 

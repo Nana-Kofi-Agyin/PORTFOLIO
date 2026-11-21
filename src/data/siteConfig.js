@@ -4,9 +4,11 @@
 
 export const site = {
   name: 'Nana Kofi Agyin',
-  role: 'Full stack developer',
+  role: 'Full-stack developer',
   location: 'Accra, Ghana (GMT)',
-  availability: '[PLACEHOLDER: availability, e.g. open to remote roles or freelance]',
+  availability: '[PLACEHOLDER: availability, e.g. open to remote roles and freelance work]',
+  availabilityUpdated: 'November 2026',
+  responseTime: '[PLACEHOLDER: typical response time, e.g. within 24 hours on weekdays]',
   experience: '[PLACEHOLDER: years of experience, or remove this line]',
   email: '[PLACEHOLDER: public email]',
   github: '[PLACEHOLDER: GitHub URL]',

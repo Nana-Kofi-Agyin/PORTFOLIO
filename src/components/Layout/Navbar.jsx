@@ -1,84 +1,66 @@
-import { useState, useEffect, useContext } from 'react';
-import { Menu, X } from 'lucide-react';
-import { UIContext } from '../../context/UIContext';
+import { useState } from 'react';
 import { site } from '../../data/siteConfig';
+import { Link } from '../../router';
 
-const navLinks = [
-  { name: 'About', href: '#about' },
-  { name: 'Services', href: '#services' },
-  { name: 'Skills', href: '#skills' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Contact', href: '#contact' },
+const links = [
+  { name: 'Work', href: '/#work' },
+  { name: 'Services', href: '/#services' },
+  { name: 'Skills', href: '/#skills' },
+  { name: 'About', href: '/#about' },
+  { name: 'Now', href: '/#now' },
+  { name: 'CV', href: '/cv' },
+  { name: 'Contact', href: '/#contact' },
 ];
 
-const Navbar = () => {
-  const { currentSection } = useContext(UIContext);
-  const [isOpen, setIsOpen] = useState(false);
+const ThemeToggle = () => {
+  const [theme, setTheme] = useState(() => {
+    const set = document.documentElement.getAttribute('data-theme');
+    if (set) return set;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
 
-  useEffect(() => {
-    if (!isOpen) return undefined;
-    const onKey = (e) => {
-      if (e.key === 'Escape') setIsOpen(false);
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [isOpen]);
+  const toggle = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      /* storage unavailable: theme still applies for this visit */
+    }
+    setTheme(next);
+  };
 
   return (
-    <header className="fixed top-0 left-0 w-full px-[5%] md:px-[9%] py-4 z-[1000] flex justify-between items-center bg-[#0b0b1a] border-b border-white/10">
-      <a href="#home" className="text-[1.8rem] font-[700] text-white">
-        {site.name}
-      </a>
-
-      <nav aria-label="Main" className="hidden md:flex gap-8 items-center">
-        {navLinks.map((link) => {
-          const isActive = currentSection === link.href.slice(1);
-          return (
-            <a
-              key={link.href}
-              href={link.href}
-              aria-current={isActive ? 'true' : undefined}
-              className={`text-[1.5rem] py-1 ${
-                isActive ? 'text-white border-b-2 border-white' : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {link.name}
-            </a>
-          );
-        })}
-      </nav>
-
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden text-white min-w-[44px] min-h-[44px] flex items-center justify-center"
-        aria-label={isOpen ? 'Close menu' : 'Open menu'}
-        aria-expanded={isOpen}
-        aria-controls="mobile-menu"
-      >
-        {isOpen ? <X className="w-7 h-7" aria-hidden="true" /> : <Menu className="w-7 h-7" aria-hidden="true" />}
-      </button>
-
-      {isOpen && (
-        <nav
-          id="mobile-menu"
-          aria-label="Mobile"
-          className="md:hidden fixed top-[64px] left-0 w-full bg-[#0b0b1a] border-b border-white/10 p-5 space-y-1"
-        >
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className="block py-3 px-3 text-[1.8rem] text-gray-100 min-h-[48px]"
-            >
-              {link.name}
-            </a>
-          ))}
-        </nav>
-      )}
-    </header>
+    <button
+      type="button"
+      onClick={toggle}
+      className="text-muted hover:text-accent cursor-pointer underline underline-offset-4 min-h-[44px]"
+    >
+      {theme === 'dark' ? 'Light theme' : 'Dark theme'}
+    </button>
   );
 };
 
-export default Navbar;
+const Header = () => (
+  <header id="top" className="no-print mx-auto max-w-4xl px-6 py-5 flex flex-wrap items-center justify-between gap-x-8 gap-y-2">
+    <Link to="/" className="font-serif text-[1.25rem] font-semibold no-underline">
+      {site.name}
+    </Link>
+    <nav aria-label="Main">
+      <ul className="m-0 p-0 list-none flex flex-wrap items-center gap-x-5 gap-y-1 text-[0.9375rem]">
+        {links.map((l) => (
+          <li key={l.href}>
+            <Link to={l.href} className="inline-flex items-center min-h-[44px] no-underline hover:underline">
+              {l.name}
+            </Link>
+          </li>
+        ))}
+        <li>
+          <ThemeToggle />
+        </li>
+      </ul>
+    </nav>
+  </header>
+);
+
+export default Header;

@@ -1,7 +1,7 @@
 {
-  "name": "frontend",
+  "name": "nana-kofi-agyin-portfolio",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,15 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emailjs/browser": "^3.8.0",
     "@tailwindcss/vite": "^4.1.18",
-    "framer-motion": "^12.29.2",
-    "lucide-react": "^0.563.0",
-    "motion": "^12.31.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-icons": "^5.5.0",
-    "simple-icons": "^16.7.0",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
