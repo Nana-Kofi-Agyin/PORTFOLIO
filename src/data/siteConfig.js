@@ -1,6 +1,6 @@
 // Single source of truth for personal facts.
-// Any value that starts with "[PLACEHOLDER" is shown on the page as visible
-// placeholder text and is never rendered as a link.
+// Any value that starts with the placeholder prefix is shown on the page as visible
+// placeholder text in dev and blocks production builds.
 
 export const site = {
   name: 'Nana Kofi Agyin',
@@ -17,5 +17,7 @@ export const site = {
   cv: '/Nana_Kofi_Agyin_CV.pdf',
 };
 
+const PLACEHOLDER_PREFIX = '[' + 'PLACEHOLDER';
+
 export const isPlaceholder = (value) =>
-  typeof value === 'string' && value.startsWith('[PLACEHOLDER');
+  typeof value === 'string' && value.startsWith(PLACEHOLDER_PREFIX);

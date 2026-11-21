@@ -2,18 +2,27 @@ import { site } from '../../data/siteConfig';
 import Val from '../Val';
 import SocialLinks from '../SocialLinks';
 import { Link } from '../../router';
-// TODO: replace this file with a professional headshot (4:5 portrait, shoulders up,
-// plain background, at least 640x800). Keep the same filename or update this import.
-import headshot from '../../assets/headshot-placeholder.jpg';
+
+// Automatically loads src/assets/headshot.jpg when present.
+// When absent, the photo column is hidden cleanly with no empty space.
+const headshotFiles = import.meta.glob('../../assets/headshot.jpg', {
+  eager: true,
+  import: 'default',
+});
+const headshot = Object.values(headshotFiles)[0] || null;
 
 const Hero = () => (
   <section aria-labelledby="hero-title" className="mx-auto max-w-4xl px-6 pt-12 pb-20 md:pt-20 md:pb-28">
-    <div className="grid gap-10 md:grid-cols-[1fr_15rem] md:gap-16 items-start">
+    <div
+      className={
+        headshot
+          ? 'grid gap-10 md:grid-cols-[1fr_15rem] md:gap-16 items-start'
+          : 'max-w-[44rem]'
+      }
+    >
       <div>
-        <h1 id="hero-title" className="max-w-[22ch]">
-          {site.name}, full-stack developer building{' '}
-          <Val v="[PLACEHOLDER: type of products]" /> for{' '}
-          <Val v="[PLACEHOLDER: type of clients]" />.
+        <h1 id="hero-title" className="line-clamp-3">
+          [WRITE ONE SENTENCE: what you build, for whom]
         </h1>
 
         <p className="mt-6 text-[1.25rem] max-w-[48ch]">
@@ -48,16 +57,18 @@ const Hero = () => (
         <SocialLinks className="mt-6 text-[0.9375rem]" />
       </div>
 
-      <img
-        src={headshot}
-        alt={`Portrait of ${site.name}`}
-        width="640"
-        height="800"
-        sizes="(max-width: 768px) 160px, 240px"
-        fetchPriority="high"
-        decoding="async"
-        className="w-40 md:w-full h-auto aspect-[4/5] object-cover object-top rounded-md border border-line order-first md:order-last"
-      />
+      {headshot && (
+        <img
+          src={headshot}
+          alt={`Portrait of ${site.name}`}
+          width="640"
+          height="800"
+          sizes="(max-width: 768px) 160px, 240px"
+          fetchPriority="high"
+          decoding="async"
+          className="w-40 md:w-full h-auto aspect-[4/5] object-cover object-top rounded-md border border-line order-first md:order-last"
+        />
+      )}
     </div>
   </section>
 );

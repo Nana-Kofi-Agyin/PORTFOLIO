@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { site, isPlaceholder } from '../../data/siteConfig';
 import { validateContact, LIMITS } from '../../lib/contactValidation';
 import Val from '../Val';
@@ -21,15 +21,18 @@ const Field = ({ id, label, error, children }) => (
 );
 
 const ContactForm = () => {
-  const openedAt = useRef(null);
+  const openedAt = useRef(0);
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', website: '' });
   const [errors, setErrors] = useState({});
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
+  useEffect(() => {
+    openedAt.current = Date.now();
+  }, []);
+
   const handleChange = (e) => {
-    if (openedAt.current === null) openedAt.current = Date.now();
     const { name, value } = e.target;
     setForm((s) => ({ ...s, [name]: value }));
     if (errors[name]) {

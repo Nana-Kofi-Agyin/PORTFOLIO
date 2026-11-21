@@ -6,7 +6,7 @@ import sanichHome from '../assets/sanich-home.jpg';
   (shown in development only on the All projects page).
 
   Rules for this file: never invent metrics, clients or quotes.
-  Use "[PLACEHOLDER: ...]" for anything you have not supplied.
+  Use placeholder markers for anything you have not supplied.
 */
 
 const raw = [

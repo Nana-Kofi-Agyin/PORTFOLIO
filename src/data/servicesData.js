@@ -1,12 +1,12 @@
 import { getProject } from './projectsData';
 
 /*
-  Offers must be things you have shipped. Each offer lists who it is for,
-  what the client gets and a typical timeline. Never add an offer you
-  cannot point to a project for. `evidence` is a project slug.
+  Only offers with a published project (`evidence` matching a project slug)
+  are shown on the site. Fill in `title`, `forWhom`, `youGet`, `timeline`
+  and `evidence` to publish the second and third offers.
 */
 
-export const services = [
+const rawServices = [
   {
     title: 'Online store with an admin dashboard',
     forWhom: '[PLACEHOLDER: who this is for, for example small shops selling in Ghana]',
@@ -15,18 +15,12 @@ export const services = [
     timeline: '[PLACEHOLDER: typical timeline in weeks]',
     evidence: 'sanich-farms',
   },
-  {
-    title: '[PLACEHOLDER: second offer you have shipped]',
-    forWhom: '[PLACEHOLDER: who it is for]',
-    youGet: '[PLACEHOLDER: what they get]',
-    timeline: '[PLACEHOLDER: typical timeline]',
-    evidence: null,
-  },
-  {
-    title: '[PLACEHOLDER: third offer you have shipped]',
-    forWhom: '[PLACEHOLDER: who it is for]',
-    youGet: '[PLACEHOLDER: what they get]',
-    timeline: '[PLACEHOLDER: typical timeline]',
-    evidence: null,
-  },
-].map((s) => ({ ...s, project: s.evidence ? getProject(s.evidence) : null }));
+  // Offer 2: uncomment and fill with a published project slug in `evidence`
+  // { title: '', forWhom: '', youGet: '', timeline: '', evidence: null },
+  // Offer 3: uncomment and fill with a published project slug in `evidence`
+  // { title: '', forWhom: '', youGet: '', timeline: '', evidence: null },
+];
+
+export const services = rawServices
+  .map((s) => ({ ...s, project: s.evidence ? getProject(s.evidence) : null }))
+  .filter((s) => Boolean(s.project));

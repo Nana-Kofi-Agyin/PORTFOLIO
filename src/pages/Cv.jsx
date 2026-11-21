@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { site, isPlaceholder } from '../data/siteConfig';
 import { publishedProjects } from '../data/projectsData';
-import { daily, usedInProjects } from '../data/skillsData';
+import { skills } from '../data/skillsData';
 import { Link } from '../router';
 import Val from '../components/Val';
 
@@ -10,7 +10,7 @@ const Cv = () => {
     document.title = `CV | ${site.name}`;
   }, []);
 
-  const allSkills = [...new Set([...daily, ...usedInProjects].map((s) => s.name))];
+  const allSkills = skills.map((s) => s.name);
 
   return (
     <article className="mx-auto max-w-3xl px-6 py-12 md:py-16 print:p-0 print:max-w-none">

@@ -1,18 +1,22 @@
-// Honest hiring-signal sections: AI workflow, collaboration evidence, and Now.
-// Never invent claims, PR links, or current work. Replace every [PLACEHOLDER].
+import { isPlaceholder } from './siteConfig';
+
+// Hiring-signal sections: AI workflow, collaboration evidence, and Now.
+// "How I use AI" and "Now" stay hidden until every field is filled with real text.
+// Do not add example text here.
+
+const isFilled = (v) => typeof v === 'string' && v.trim().length > 0 && !isPlaceholder(v);
+const listFilled = (arr) => Array.isArray(arr) && arr.length > 0 && arr.every(isFilled);
 
 export const aiWorkflow = {
-  summary:
-    'I use AI coding tools to move faster on routine work, and I review and test what ships.',
-  delegate: [
-    '[PLACEHOLDER: e.g. boilerplate scaffolding, test case ideas, and drafting regex or SQL queries]',
-    '[PLACEHOLDER: e.g. rubber-ducking error messages and exploring unfamiliar library APIs]',
-  ],
-  reviewMyself: [
-    '[PLACEHOLDER: e.g. architecture, data models, auth, payment flows, and security boundaries]',
-    '[PLACEHOLDER: e.g. final code review, edge cases, accessibility checks, and performance profiling]',
-  ],
+  summary: '',
+  delegate: [],
+  reviewMyself: [],
 };
+
+export const hasAiWorkflowContent =
+  isFilled(aiWorkflow.summary) &&
+  listFilled(aiWorkflow.delegate) &&
+  listFilled(aiWorkflow.reviewMyself);
 
 export const collaboration = [
   {
@@ -36,12 +40,14 @@ export const collaboration = [
 ];
 
 export const now = {
-  quarter: 'Q4 2026',
-  updated: 'November 2026',
-  building: [
-    '[PLACEHOLDER: what you are actively building this quarter]',
-  ],
-  learning: [
-    '[PLACEHOLDER: what you are studying or practising this quarter]',
-  ],
+  quarter: '',
+  updated: '',
+  building: [],
+  learning: [],
 };
+
+export const hasNowContent =
+  isFilled(now.quarter) &&
+  isFilled(now.updated) &&
+  listFilled(now.building) &&
+  listFilled(now.learning);
