@@ -1,88 +1,67 @@
-import './App.css'
-import { useContext, useEffect } from 'react'
-import Navbar from './components/Layout/Navbar'
-import Hero from './components/sections/Hero'
-import About from './components/sections/About'
-import Services from './components/sections/Services'
-import Projects from './components/sections/Projects'
-import Skills from './components/sections/Skills'
-import Contact from './components/sections/Contact'
-import Footer from './components/Layout/Footer'
-import { ScrollProgress, ScrollToTop } from './components/ScrollUtils'
-import useSectionObserver from './hooks/useSectionObserver'
-import { UIContext } from './context/UIContext'
+import './App.css';
+import { useContext, useEffect } from 'react';
+import Navbar from './components/Layout/Navbar';
+import Hero from './components/sections/Hero';
+import About from './components/sections/About';
+import Services from './components/sections/Services';
+import Projects from './components/sections/Projects';
+import Skills from './components/sections/Skills';
+import Contact from './components/sections/Contact';
+import Footer from './components/Layout/Footer';
+import useSectionObserver from './hooks/useSectionObserver';
+import { UIContext } from './context/UIContext';
+
+const SECTION_IDS = ['home', 'about', 'services', 'skills', 'projects', 'contact'];
 
 function App() {
   const { setCurrentSection } = useContext(UIContext);
 
-  useSectionObserver(['home', 'about', 'services', 'skills', 'projects', 'contact'], setCurrentSection);
+  useSectionObserver(SECTION_IDS, setCurrentSection);
 
-  // Universal smooth scroll handler for all internal anchor links
+  // In-page anchors: offset for the fixed header, honour reduced motion,
+  // and move keyboard focus to the target section.
   useEffect(() => {
     const handleAnchorClick = (e) => {
-      const target = e.target.closest('a[href^="#"]');
-      if (!target) return;
-
-      const href = target.getAttribute('href');
+      const link = e.target.closest('a[href^="#"]');
+      if (!link) return;
+      const href = link.getAttribute('href');
       if (!href || href === '#') return;
 
+      const target = document.getElementById(href.slice(1));
+      if (!target) return;
       e.preventDefault();
 
-      const targetId = href.replace('#', '');
-      const targetElement = document.getElementById(targetId);
-      
-      if (targetElement) {
-        // Calculate navbar height for offset
-        const navbar = document.querySelector('header');
-        const navbarHeight = navbar ? navbar.offsetHeight : 80;
-        
-        // Get element position
-        const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.scrollY - navbarHeight - 20;
-
-        // Smooth scroll with offset
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-
-        // Update URL hash
-        window.history.pushState(null, '', href);
-      }
+      const header = document.querySelector('header');
+      const offset = (header ? header.offsetHeight : 80) + 20;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({
+        top: target.getBoundingClientRect().top + window.scrollY - offset,
+        behavior: reduce ? 'auto' : 'smooth',
+      });
+      target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+      window.history.pushState(null, '', href);
     };
 
-    // Add event listener to document
     document.addEventListener('click', handleAnchorClick);
-
-    // Cleanup
-    return () => {
-      document.removeEventListener('click', handleAnchorClick);
-    };
+    return () => document.removeEventListener('click', handleAnchorClick);
   }, []);
 
   return (
-    <div className="bg-[#0b0b1a] min-h-screen overflow-x-hidden">
-      {/* Scroll Progress Bar */}
-      <ScrollProgress />
-      
-      {/* Radial gradient background */}
-      <div className="fixed inset-0 bg-gradient-radial from-indigo-900/20 via-[#0b0b1a] to-[#0b0b1a] pointer-events-none"></div>
-      
-      <div className="relative z-10">
-        <Navbar />
+    <div className="bg-[#0b0b1a] min-h-screen">
+      <a href="#main" className="skip-link">Skip to main content</a>
+      <Navbar />
+      <main id="main">
         <Hero />
         <About />
         <Services />
         <Skills />
         <Projects />
         <Contact />
-        <Footer />
-      </div>
-
-      {/* Contact modal removed: links navigate to contact section */}
-      <ScrollToTop />
+      </main>
+      <Footer />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

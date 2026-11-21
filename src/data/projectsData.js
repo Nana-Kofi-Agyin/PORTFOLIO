@@ -1,84 +1,23 @@
-import { ShoppingCart, CheckSquare, BarChart3, Cloud, Briefcase, MessageCircle } from 'lucide-react';
 import ecommerceImg from '../assets/ecommerce.png';
+
+// Only projects with a real repo and a real live site are published.
+// Task Management App, Social Media Dashboard, Weather App, Portfolio Website
+// and Chat Application were removed because their links were placeholders
+// (github.com and demo.com). Re-add them here once real links exist.
 
 export const projects = [
   {
-    title: "E-Commerce Platform",
-    description: "Full-stack MERN e-commerce application with payment integration and admin dashboard.",
-    tags: ["React", "Node.js", "MongoDB", "Express", "Redux", "JavaScript", "HTML5"],
-    skillTags: {
-      frontend: ["React",  "JavaScript", "HTML5"],
-      backend: ["Node.js", "Express", "MongoDB"],
-      tools: ["Git", "Vercel"]
-    },
-    // Use the image URL for the e-commerce project; consumer will handle rendering
+    title: 'Sanich Farms e-commerce platform',
+    description:
+      'Full stack MERN store with payment integration and an admin dashboard.',
+    stack: ['React', 'Node.js', 'Express', 'MongoDB', 'Redux'],
     image: ecommerceImg,
-    githubLink: "https://github.com/Sprint-Force/Sanich-Farms.git",
-    viewSite: "https://sanich-farms.vercel.app/"
+    imageAlt: 'Screenshot of the Sanich Farms storefront home page',
+    githubLink: 'https://github.com/Sprint-Force/Sanich-Farms.git',
+    viewSite: 'https://sanich-farms.vercel.app/',
+    role: '[PLACEHOLDER: your role and what you built]',
+    outcome: '[PLACEHOLDER: real outcome, or remove this line]',
   },
-  {
-    title: "Task Management App",
-    description: "Collaborative task management tool with real-time updates and team features.",
-    tags: ["React", "Firebase", "Tailwind CSS", "JavaScript"],
-    skillTags: {
-      frontend: ["React", "Tailwind CSS", "JavaScript"],
-      backend: ["Firebase"],
-      tools: ["Git", "Figma"]
-    },
-    image: CheckSquare,
-    githubLink: "https://github.com",
-    viewSite: "https://demo.com"
-  },
-  {
-    title: "Social Media Dashboard",
-    description: "Analytics dashboard for tracking social media metrics across multiple platforms.",
-    tags: ["Next.js", "PostgreSQL", "Prisma", "TypeScript"],
-    skillTags: {
-      frontend: ["Next.js", "TypeScript"],
-      backend: ["PostgreSQL", "Prisma"],
-      tools: ["Git", "Vercel"]
-    },
-    image: BarChart3,
-    githubLink: "https://github.com",
-    viewSite: "https://demo.com"
-  },
-  {
-    title: "Weather App",
-    description: "Real-time weather application with location-based forecasts and interactive maps.",
-    tags: ["React", "CSS3", "JavaScript"],
-    skillTags: {
-      frontend: ["React", "CSS3", "JavaScript"],
-      backend: [],
-      tools: ["Git", "Vite"]
-    },
-    image: Cloud,
-    githubLink: "https://github.com",
-    viewSite: "https://demo.com"
-  },
-  {
-    title: "Portfolio Website",
-    description: "Modern portfolio website with animations and responsive design.",
-    tags: ["React", "Framer Motion", "Tailwind CSS", "JavaScript", "HTML5"],
-    skillTags: {
-      frontend: ["React", "Framer Motion", "Tailwind CSS", "JavaScript", "HTML5"],
-      backend: [],
-      tools: ["Git", "Vite", "Vercel", "Figma"]
-    },
-    image: Briefcase,
-    githubLink: "https://github.com",
-    viewSite: "https://demo.com"
-  },
-  {
-    title: "Chat Application",
-    description: "Real-time chat app with user authentication and message history.",
-    tags: ["React", "Socket.io", "Node.js", "MongoDB", "JavaScript"],
-    skillTags: {
-      frontend: ["React", "JavaScript"],
-      backend: ["Node.js", "Express", "MongoDB"],
-      tools: ["Git", "Docker"]
-    },
-    image: MessageCircle,
-    githubLink: "https://github.com",
-    viewSite: "https://demo.com"
-  }
 ];
+
+export default projects;

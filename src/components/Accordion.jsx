@@ -13,6 +13,8 @@ const Accordion = ({ title, icon: Icon, children, defaultOpen = false }) => {
   return (
     <div className="border border-white/10 rounded-xl overflow-hidden bg-white/5 backdrop-blur-sm hover:border-indigo-500/30 transition-colors duration-300">
       <button
+        type="button"
+        aria-expanded={isOpen}
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between p-5 sm:p-6 text-left min-h-[60px] hover:bg-white/5 transition-colors duration-200"
       >
