@@ -40,10 +40,15 @@ export const collaboration = [
 ];
 
 export const now = {
-  quarter: '',
-  updated: '',
-  building: [],
-  learning: [],
+  quarter: 'Q4 2026',
+  updated: 'November 2026',
+  building: [
+    'Scalable web apps, APIs, and AI-assisted tools',
+  ],
+  learning: [
+    'AI agents',
+    'Kubernetes',
+  ],
 };
 
 export const hasNowContent =

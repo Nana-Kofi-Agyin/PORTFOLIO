@@ -10,7 +10,24 @@ const Cv = () => {
     document.title = `CV | ${site.name}`;
   }, []);
 
-  const allSkills = skills.map((s) => s.name);
+  const profileSkills = [
+    'TypeScript',
+    'JavaScript',
+    'Python',
+    'React',
+    'Next.js',
+    'Tailwind CSS',
+    'Node.js',
+    'Express',
+    'NestJS',
+    'PostgreSQL',
+    'MongoDB',
+    'MySQL',
+    'Docker',
+    'AWS',
+    'GitHub Actions',
+  ];
+  const allSkills = [...new Set([...skills.map((s) => s.name), ...profileSkills])];
 
   return (
     <article className="mx-auto max-w-3xl px-6 py-12 md:py-16 print:p-0 print:max-w-none">
@@ -67,8 +84,9 @@ const Cv = () => {
       <section aria-labelledby="cv-summary" className="mt-8">
         <h2 id="cv-summary" className="text-[1.25rem]">Summary</h2>
         <p className="mt-3 max-w-[65ch]">
-          Full-stack developer in {site.location}. I build web applications with React, Node.js,
-          Express and MongoDB. <Val v={site.experience} />
+          Full-stack software engineer in {site.location}. I build scalable web applications, APIs,
+          and AI-assisted tools with TypeScript, React, Next.js, Node.js, and Python.{' '}
+          <Val v={site.experience} />
         </p>
       </section>
 
@@ -104,9 +122,30 @@ const Cv = () => {
 
       <section aria-labelledby="cv-experience" className="mt-8 break-inside-avoid">
         <h2 id="cv-experience" className="text-[1.25rem]">Experience &amp; Education</h2>
-        <p className="mt-3 max-w-[65ch]">
-          <Val v="[PLACEHOLDER: add work history, education, or certifications]" />
-        </p>
+        <ul className="mt-4 m-0 p-0 list-none space-y-5">
+          <li>
+            <h3 className="text-[1.0625rem] font-sans font-semibold">
+              IT Intern · Food and Drugs Authority
+            </h3>
+            <p className="text-[0.9375rem] text-muted">Oct 2025 – Nov 2025</p>
+            <p className="mt-1 max-w-[65ch]">
+              Managed and mapped physical and logical network connections, provided systematic
+              hardware and software troubleshooting across directorates, and digitized paper-based
+              workflows.
+            </p>
+          </li>
+          <li>
+            <h3 className="text-[1.0625rem] font-sans font-semibold">
+              BSc Computer Science · University of Ghana, Legon
+            </h3>
+            <p className="text-[0.9375rem] text-muted">Jan 2024 – Present</p>
+          </li>
+          <li>
+            <h3 className="text-[1.0625rem] font-sans font-semibold">
+              Responsive Web Design Certification · freeCodeCamp
+            </h3>
+          </li>
+        </ul>
       </section>
     </article>
   );

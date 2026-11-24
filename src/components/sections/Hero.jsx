@@ -22,12 +22,11 @@ const Hero = () => (
     >
       <div>
         <h1 id="hero-title" className="line-clamp-3">
-          [WRITE ONE SENTENCE: what you build, for whom]
+          I build scalable web apps, APIs, and AI-assisted tools.
         </h1>
 
         <p className="mt-6 text-[1.25rem] max-w-[48ch]">
-          I work with React, Node.js and MongoDB.{' '}
-          <Val v="[PLACEHOLDER: one concrete detail, such as an industry or a real result]" />
+          I work with TypeScript, React, Next.js, Node.js, and Python.
         </p>
 
         <p className="mt-6 flex items-start gap-2 text-muted">

@@ -6,7 +6,7 @@ import { publishedProjects } from './projectsData';
   only if you want a "Learning" row shown.
 */
 
-export const learningSkills = [];
+export const learningSkills = ['AI agents', 'Kubernetes'];
 
 export const skills = [...new Set(publishedProjects.flatMap((p) => p.stack))]
   .map((name) => {

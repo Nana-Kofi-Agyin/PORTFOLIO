@@ -3,11 +3,16 @@ import { publishedProjects } from '../../data/projectsData';
 import { Link } from '../../router';
 import Val from '../Val';
 
-// TODO: replace the three placeholder steps with your real path. Keep each to one line.
 const timeline = [
-  { when: '[PLACEHOLDER: year]', what: '[PLACEHOLDER: where you started]' },
-  { when: '[PLACEHOLDER: year]', what: '[PLACEHOLDER: a step that changed your direction]' },
-  { when: '[PLACEHOLDER: year]', what: '[PLACEHOLDER: where you are now]' },
+  { when: '2024', what: 'Started BSc in Computer Science at the University of Ghana, Legon.' },
+  {
+    when: '2025',
+    what: 'Built the Sanich Farms e-commerce platform and completed an IT internship at the Food and Drugs Authority.',
+  },
+  {
+    when: '2026',
+    what: 'Building full-stack web apps and APIs, and exploring AI agents and Kubernetes.',
+  },
 ];
 
 const sanich = publishedProjects.find((p) => p.slug === 'sanich-farms');
@@ -31,7 +36,7 @@ const About = () => (
           <Val v="[PLACEHOLDER: one specific thing you learned while building it]" />
         </p>
         <p>
-          I am looking for <Val v="[PLACEHOLDER: the roles or projects you want]" />.
+          I am looking for remote roles, international teams, and open-source collaboration.
         </p>
         <p>
           <Val v={site.experience} />

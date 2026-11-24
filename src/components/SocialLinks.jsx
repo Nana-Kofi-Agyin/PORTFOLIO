@@ -5,7 +5,7 @@ const items = [
   { label: 'GitHub', href: site.github },
   { label: 'LinkedIn', href: site.linkedin },
   { label: 'X', href: site.x },
-];
+].filter(({ href }) => Boolean(href));
 
 const SocialLinks = ({ className = '' }) => (
   <ul className={`flex flex-wrap gap-x-6 gap-y-2 ${className}`}>
