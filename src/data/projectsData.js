@@ -1,84 +1,156 @@
-import { ShoppingCart, CheckSquare, BarChart3, Cloud, Briefcase, MessageCircle } from 'lucide-react';
-import ecommerceImg from '../assets/ecommerce.png';
+import sanichHome from '../assets/sanich-home.jpg';
 
-export const projects = [
+/*
+  A project is published only when it has at least one real screenshot
+  AND a live link. Anything else is hidden and listed under `todo`
+  (shown in development only on the All projects page).
+
+  Rules for this file: never invent metrics, clients or quotes.
+  Use placeholder markers for anything you have not supplied.
+*/
+
+const raw = [
   {
-    title: "E-Commerce Platform",
-    description: "Full-stack MERN e-commerce application with payment integration and admin dashboard.",
-    tags: ["React", "Node.js", "MongoDB", "Express", "Redux", "JavaScript", "HTML5"],
-    skillTags: {
-      frontend: ["React",  "JavaScript", "HTML5"],
-      backend: ["Node.js", "Express", "MongoDB"],
-      tools: ["Git", "Vercel"]
-    },
-    // Use the image URL for the e-commerce project; consumer will handle rendering
-    image: ecommerceImg,
-    githubLink: "https://github.com/Sprint-Force/Sanich-Farms.git",
-    viewSite: "https://sanich-farms.vercel.app/"
+    slug: 'sanich-farms',
+    title: 'Sanich Farms online store',
+    summary: 'A full stack MERN store with payments and an admin dashboard.',
+    role: 'Frontend Developer & Sprint Coordinator',
+    timeline: 'May – Aug 2025',
+    stack: ['React', 'Redux', 'Node.js', 'Express', 'MongoDB'],
+    problem: '[PLACEHOLDER: 2 to 3 sentences. Who is the store for and what was not working before?]',
+    built:
+      'Architected the React storefront UI, integrated it with the backend API, and coordinated sprint planning, requirement analysis, backlog management, and documentation.',
+    decisions: [
+      {
+        decision: '[PLACEHOLDER: key technical decision, for example why Redux or how payments are handled]',
+        tradeoff: '[PLACEHOLDER: what you gave up or what it cost]',
+      },
+      {
+        decision: '[PLACEHOLDER: second decision]',
+        tradeoff: '[PLACEHOLDER: its trade-off]',
+      },
+    ],
+    debuggingStory:
+      '[PLACEHOLDER: one real bug you hit in this project, how you diagnosed it, and how you fixed it]',
+    notBuilt:
+      '[PLACEHOLDER: one feature or abstraction you intentionally left out of scope, and why]',
+    outcome: '[PLACEHOLDER: a real metric, or what you learned. Do not guess a number.]',
+    screenshots: [
+      {
+        src: sanichHome,
+        width: 1600,
+        height: 803,
+        alt: 'Home page of the Sanich Farms online store',
+        caption: 'Store home page',
+      },
+      // TODO: add 1 to 3 more real screenshots (product page, checkout, admin dashboard).
+    ],
+    diagram: 'mern',
+    live: 'https://sanich-farms.vercel.app/',
+    github: 'https://github.com/Sprint-Force/Sanich-Farms.git',
+  },
+
+  // Hidden until each has a real screenshot and a live link.
+  {
+    slug: 'agri-diagnostics-mobile',
+    title: 'Agri-Diagnostics Mobile',
+    stack: ['TypeScript', 'React Native', 'Expo'],
+    screenshots: [],
+    live: 'https://agri-dignostics-mobile.vercel.app',
+    github: 'https://github.com/Nana-Kofi-Agyin/Agri-Dignostics-Mobile',
   },
   {
-    title: "Task Management App",
-    description: "Collaborative task management tool with real-time updates and team features.",
-    tags: ["React", "Firebase", "Tailwind CSS", "JavaScript"],
-    skillTags: {
-      frontend: ["React", "Tailwind CSS", "JavaScript"],
-      backend: ["Firebase"],
-      tools: ["Git", "Figma"]
-    },
-    image: CheckSquare,
-    githubLink: "https://github.com",
-    viewSite: "https://demo.com"
+    slug: 'minecraft-diagnosis',
+    title: 'MineCraft Diagnosis',
+    stack: ['JavaScript'],
+    screenshots: [],
+    live: 'https://mine-craft-diagnosis.vercel.app',
+    github: 'https://github.com/Nana-Kofi-Agyin/MineCraft-Diagnosis',
   },
   {
-    title: "Social Media Dashboard",
-    description: "Analytics dashboard for tracking social media metrics across multiple platforms.",
-    tags: ["Next.js", "PostgreSQL", "Prisma", "TypeScript"],
-    skillTags: {
-      frontend: ["Next.js", "TypeScript"],
-      backend: ["PostgreSQL", "Prisma"],
-      tools: ["Git", "Vercel"]
-    },
-    image: BarChart3,
-    githubLink: "https://github.com",
-    viewSite: "https://demo.com"
+    slug: 'portfolio-website',
+    title: 'Portfolio Website',
+    stack: ['React', 'Tailwind CSS', 'Vite'],
+    screenshots: [],
+    live: 'https://nana-kofi-agyin.vercel.app/',
+    github: 'https://github.com/Nana-Kofi-Agyin/PORTFOLIO',
   },
   {
-    title: "Weather App",
-    description: "Real-time weather application with location-based forecasts and interactive maps.",
-    tags: ["React", "CSS3", "JavaScript"],
-    skillTags: {
-      frontend: ["React", "CSS3", "JavaScript"],
-      backend: [],
-      tools: ["Git", "Vite"]
-    },
-    image: Cloud,
-    githubLink: "https://github.com",
-    viewSite: "https://demo.com"
+    slug: 'dex-portfolio',
+    title: 'DEX Portfolio',
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    screenshots: [],
+    live: 'https://dex-porfolio.vercel.app/',
+    github: 'https://github.com/Nana-Kofi-Agyin/DEX-Portfolio',
   },
   {
-    title: "Portfolio Website",
-    description: "Modern portfolio website with animations and responsive design.",
-    tags: ["React", "Framer Motion", "Tailwind CSS", "JavaScript", "HTML5"],
-    skillTags: {
-      frontend: ["React", "Framer Motion", "Tailwind CSS", "JavaScript", "HTML5"],
-      backend: [],
-      tools: ["Git", "Vite", "Vercel", "Figma"]
-    },
-    image: Briefcase,
-    githubLink: "https://github.com",
-    viewSite: "https://demo.com"
+    slug: 'learning-management-system',
+    title: 'Learning Management System',
+    stack: ['JavaScript'],
+    screenshots: [],
+    live: '',
+    github: 'https://github.com/Nana-Kofi-Agyin/Learning-Management-System',
   },
   {
-    title: "Chat Application",
-    description: "Real-time chat app with user authentication and message history.",
-    tags: ["React", "Socket.io", "Node.js", "MongoDB", "JavaScript"],
-    skillTags: {
-      frontend: ["React", "JavaScript"],
-      backend: ["Node.js", "Express", "MongoDB"],
-      tools: ["Git", "Docker"]
-    },
-    image: MessageCircle,
-    githubLink: "https://github.com",
-    viewSite: "https://demo.com"
-  }
+    slug: 'donation-mobile-app',
+    title: 'Donation Mobile App',
+    stack: ['TypeScript'],
+    screenshots: [],
+    live: '',
+    github: 'https://github.com/Nana-Kofi-Agyin/Donation-Mobile-App',
+  },
+  {
+    slug: 'automotive-os',
+    title: 'Automotive OS',
+    stack: ['C'],
+    screenshots: [],
+    live: '',
+    github: 'https://github.com/Nana-Kofi-Agyin/Automotive-OS',
+  },
+  {
+    slug: 'e-commerce',
+    title: 'E-Commerce',
+    stack: ['JavaScript'],
+    screenshots: [],
+    live: '',
+    github: 'https://github.com/Nana-Kofi-Agyin/E-COMMERCE',
+  },
+  {
+    slug: 'portfolio-builder',
+    title: 'Portfolio Builder',
+    stack: ['JavaScript'],
+    screenshots: [],
+    live: '',
+    github: 'https://github.com/Nana-Kofi-Agyin/Portfolio-Builder',
+  },
+  {
+    slug: 'python-projects',
+    title: 'Python Projects',
+    stack: ['Python'],
+    screenshots: [],
+    live: '',
+    github: 'https://github.com/Nana-Kofi-Agyin/Python',
+  },
 ];
+
+const todoFor = (p) => {
+  const todo = [];
+  if (!p.screenshots.length) todo.push('TODO: add at least one real screenshot');
+  if (!p.live) todo.push('TODO: add a real live link');
+  if (!p.github) todo.push('TODO: add a real GitHub link');
+  return todo;
+};
+
+export const projects = raw.map((p) => ({ ...p, todo: todoFor(p) }));
+
+const isPublished = (p) => p.screenshots.length > 0 && Boolean(p.live);
+
+export const publishedProjects = projects.filter(isPublished);
+export const hiddenProjects = projects.filter((p) => !isPublished(p));
+
+// Home page shows at most three, in the order listed above.
+export const featuredProjects = publishedProjects.slice(0, 3);
+
+export const getProject = (slug) => publishedProjects.find((p) => p.slug === slug);
+
+export const allStacks = [...new Set(publishedProjects.flatMap((p) => p.stack))].sort();

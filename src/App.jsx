@@ -1,88 +1,70 @@
-import './App.css'
-import { useContext, useEffect } from 'react'
-import Navbar from './components/Layout/Navbar'
-import Hero from './components/sections/Hero'
-import About from './components/sections/About'
-import Services from './components/sections/Services'
-import Projects from './components/sections/Projects'
-import Skills from './components/sections/Skills'
-import Contact from './components/sections/Contact'
-import Footer from './components/Layout/Footer'
-import { ScrollProgress, ScrollToTop } from './components/ScrollUtils'
-import useSectionObserver from './hooks/useSectionObserver'
-import { UIContext } from './context/UIContext'
+import { useEffect, useRef } from 'react';
+import './App.css';
+import Header from './components/Layout/Navbar';
+import Footer from './components/Layout/Footer';
+import Analytics from './components/Analytics';
+import Home from './pages/Home';
+import AllProjects from './pages/AllProjects';
+import CaseStudy from './pages/CaseStudy';
+import Cv from './pages/Cv';
+import NotFound from './pages/NotFound';
+import { useLocation } from './routerHooks';
 
-function App() {
-  const { setCurrentSection } = useContext(UIContext);
+const HOME_TITLE = 'Nana Kofi Agyin | Full-stack developer in Accra';
 
-  useSectionObserver(['home', 'about', 'services', 'skills', 'projects', 'contact'], setCurrentSection);
-
-  // Universal smooth scroll handler for all internal anchor links
-  useEffect(() => {
-    const handleAnchorClick = (e) => {
-      const target = e.target.closest('a[href^="#"]');
-      if (!target) return;
-
-      const href = target.getAttribute('href');
-      if (!href || href === '#') return;
-
-      e.preventDefault();
-
-      const targetId = href.replace('#', '');
-      const targetElement = document.getElementById(targetId);
-      
-      if (targetElement) {
-        // Calculate navbar height for offset
-        const navbar = document.querySelector('header');
-        const navbarHeight = navbar ? navbar.offsetHeight : 80;
-        
-        // Get element position
-        const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.scrollY - navbarHeight - 20;
-
-        // Smooth scroll with offset
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-
-        // Update URL hash
-        window.history.pushState(null, '', href);
-      }
-    };
-
-    // Add event listener to document
-    document.addEventListener('click', handleAnchorClick);
-
-    // Cleanup
-    return () => {
-      document.removeEventListener('click', handleAnchorClick);
-    };
-  }, []);
-
-  return (
-    <div className="bg-[#0b0b1a] min-h-screen overflow-x-hidden">
-      {/* Scroll Progress Bar */}
-      <ScrollProgress />
-      
-      {/* Radial gradient background */}
-      <div className="fixed inset-0 bg-gradient-radial from-indigo-900/20 via-[#0b0b1a] to-[#0b0b1a] pointer-events-none"></div>
-      
-      <div className="relative z-10">
-        <Navbar />
-        <Hero />
-        <About />
-        <Services />
-        <Skills />
-        <Projects />
-        <Contact />
-        <Footer />
-      </div>
-
-      {/* Contact modal removed: links navigate to contact section */}
-      <ScrollToTop />
-    </div>
-  )
+function Page({ path }) {
+  const clean = path.replace(/\/+$/, '') || '/';
+  if (clean === '/') return <Home />;
+  if (clean === '/projects') return <AllProjects />;
+  if (clean === '/cv') return <Cv />;
+  const m = clean.match(/^\/projects\/([\w-]+)$/);
+  if (m) return <CaseStudy slug={m[1]} />;
+  return <NotFound />;
 }
 
-export default App
+function App() {
+  const loc = useLocation();
+  const first = useRef(true);
+  const lastPath = useRef(loc.path);
+
+  // Scroll and focus handling for client-side navigation.
+  useEffect(() => {
+    const pathChanged = lastPath.current !== loc.path;
+    lastPath.current = loc.path;
+    if (loc.path === '/' && pathChanged) document.title = HOME_TITLE;
+
+    if (loc.hash) {
+      const el = document.getElementById(loc.hash.slice(1));
+      if (el) {
+        el.scrollIntoView();
+        el.setAttribute('tabindex', '-1');
+        el.focus({ preventScroll: true });
+        return;
+      }
+    }
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    const h1 = document.querySelector('main h1');
+    if (h1) {
+      h1.setAttribute('tabindex', '-1');
+      h1.focus({ preventScroll: true });
+    }
+  }, [loc.key, loc.path, loc.hash]);
+
+  return (
+    <>
+      <Analytics />
+      <a href="#main" className="skip-link no-print">Skip to main content</a>
+      <Header />
+      <main id="main">
+        <Page path={loc.path} />
+      </main>
+      <Footer />
+    </>
+  );
+}
+
+export default App;

@@ -1,207 +1,247 @@
-// eslint-disable-next-line no-unused-vars
-import { useRef, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FiSend } from 'react-icons/fi';
-import { fadeUpVariants, scaleInVariants } from '../../utils/animationVariants';
+import { useEffect, useRef, useState } from 'react';
+import { site, isPlaceholder } from '../../data/siteConfig';
+import { validateContact, LIMITS } from '../../lib/contactValidation';
+import Val from '../Val';
 
-const Contact = () => {
+const baseField =
+  'block w-full min-h-[44px] px-3 py-2 rounded-md bg-transparent border text-fg';
 
-  return (
-    <section 
-      id="contact" 
-      className="min-h-screen bg-gradient-to-b from-[#0b0b1a] via-[#1a1a2e] to-[#0b0b1a] px-[5%] sm:px-[7%] md:px-[9%] py-12 md:py-16 flex items-center justify-center relative overflow-hidden"
-    >
-      <div className="absolute top-0 left-1/2 w-[40rem] h-[40rem] bg-indigo-500/20 rounded-full filter blur-[150px]"></div>
-      
-      <div className="w-full max-w-[75rem] relative z-10">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={fadeUpVariants}
-        >
-          <h2 className="text-center text-[3rem] sm:text-[3.5rem] md:text-[4.5rem] font-[800] mb-4 md:mb-6 px-4">
-            Get In <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Touch</span>
-          </h2>
-          <p className="text-center text-[1.4rem] sm:text-[1.6rem] text-gray-400 mb-8 md:mb-10 px-4">
-            Have a project in mind? Let's work together to create something amazing
-          </p>
-        </motion.div>
-        
-        <motion.div 
-          className="w-full bg-white/5 backdrop-blur-sm p-6 sm:p-8 md:p-12 rounded-2xl sm:rounded-3xl border border-white/10" 
-          style={{boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'}}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={scaleInVariants}
-        >
-          {/* Form state and handler implementation */}
-          <ContactForm />
-        </motion.div>
-      </div>
-    </section>
-  );
-};
-
-export default Contact;
+const Field = ({ id, label, error, children }) => (
+  <div>
+    <label htmlFor={id} className="block mb-1 text-[0.9375rem] text-muted">
+      {label}
+    </label>
+    {children}
+    {error && (
+      <p id={`${id}-error`} role="alert" className="mt-1 text-[0.875rem] text-danger">
+        {error}
+      </p>
+    )}
+  </div>
+);
 
 const ContactForm = () => {
-  const formRef = useRef(null);
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-    website: '' // honeypot
-  });
+  const openedAt = useRef(0);
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', website: '' });
+  const [errors, setErrors] = useState({});
   const [sending, setSending] = useState(false);
-  const [toast, setToast] = useState({ show: false, type: 'success', message: '' });
-
-  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY; // used as user_id for EmailJS REST API
+  const [sent, setSent] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
-    if (import.meta.env.DEV) {
-      console.log('EmailJS env presence:', {
-        service: !!serviceId,
-        template: !!templateId,
-        publicKey: !!publicKey
-      });
-    }
+    openedAt.current = Date.now();
   }, []);
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  const showToast = (type, message) => {
-    setToast({ show: true, type, message });
-    setTimeout(() => setToast((t) => ({ ...t, show: false })), 4500);
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((s) => ({ ...s, [name]: value }));
-  };
-
-  const validate = () => {
-    if (form.website && form.website.trim() !== '') return { ok: false, msg: 'Detected bot.' };
-    if (!form.name.trim()) return { ok: false, msg: 'Please enter your full name.' };
-    if (!form.email.trim() || !emailRegex.test(form.email)) return { ok: false, msg: 'Please enter a valid email.' };
-    if (!form.subject.trim()) return { ok: false, msg: 'Please enter a subject.' };
-    if (!form.message.trim()) return { ok: false, msg: 'Please enter a message.' };
-    return { ok: true };
+    if (errors[name]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const v = validate();
-    if (!v.ok) {
-      showToast('error', v.msg);
-      return;
-    }
-    if (!serviceId || !templateId || !publicKey) {
-      showToast('error', 'Email service not configured. Check env variables.');
+    setSubmitError('');
+
+    const result = validateContact(form);
+    if (!result.ok) {
+      setErrors(result.errors);
+      const firstKey = Object.keys(result.errors)[0];
+      document.getElementById(`contact-${firstKey}`)?.focus();
       return;
     }
 
     setSending(true);
-    const templateParams = {
-      from_name: form.name,
-      from_email: form.email,
-      subject: form.subject,
-      message: form.message
-    };
-
     try {
-      const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+      const elapsed = openedAt.current ? Date.now() - openedAt.current : 0;
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          service_id: serviceId,
-          template_id: templateId,
-          user_id: publicKey,
-          template_params: templateParams
-        })
+          ...result.values,
+          website: form.website,
+          elapsed,
+        }),
       });
+      const data = await res.json().catch(() => ({}));
 
-      if (!res.ok) throw new Error('Email API error');
+      if (res.status === 422 && data.errors) {
+        setErrors(data.errors);
+        const firstKey = Object.keys(data.errors)[0];
+        document.getElementById(`contact-${firstKey}`)?.focus();
+        return;
+      }
+
+      if (!res.ok) {
+        setSubmitError(data.error || 'Could not send your message. Please email me directly.');
+        return;
+      }
 
       setForm({ name: '', email: '', subject: '', message: '', website: '' });
-      showToast('success', 'Message sent — I will reply shortly!');
-    } catch (err) {
-      showToast('error', 'Failed to send message. Please try again later.');
+      setErrors({});
+      setSent(true);
+    } catch {
+      setSubmitError('Could not reach the server. Please email me directly.');
     } finally {
       setSending(false);
     }
   };
 
+  if (sent) {
+    return (
+      <div
+        role="status"
+        aria-live="polite"
+        className="mt-6 max-w-[34rem] p-5 rounded-md border border-accent bg-surface space-y-3"
+      >
+        <p className="font-semibold">Message sent.</p>
+        <p className="text-muted text-[0.9375rem]">
+          Thanks for reaching out. Response time: <Val v={site.responseTime} />.
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            openedAt.current = Date.now();
+            setSent(false);
+          }}
+          className="min-h-[44px] px-4 rounded-md border border-line cursor-pointer hover:border-accent"
+        >
+          Send another message
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <form ref={formRef} onSubmit={handleSubmit}>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 md:gap-8 mb-5 sm:mb-6 md:mb-8">
+    <form onSubmit={handleSubmit} noValidate className="mt-6 space-y-5 max-w-[34rem]">
+      <Field id="contact-name" label="Name" error={errors.name}>
         <input
+          id="contact-name"
           name="name"
+          type="text"
+          required
+          maxLength={LIMITS.name}
+          autoComplete="name"
+          aria-invalid={Boolean(errors.name)}
+          aria-describedby={errors.name ? 'contact-name-error' : undefined}
           value={form.name}
           onChange={handleChange}
-          type="text"
-          placeholder="Full Name"
-          className="w-full px-5 sm:px-6 py-4 sm:py-5 min-h-[48px] text-[1.4rem] sm:text-[1.5rem] text-white bg-white/5 rounded-xl border border-white/10 transition-all duration-300 focus:border-indigo-500/50 focus:bg-white/10 focus:outline-none placeholder-gray-500"
+          className={`${baseField} ${errors.name ? 'border-danger' : 'border-line'}`}
         />
+      </Field>
+
+      <Field id="contact-email" label="Email" error={errors.email}>
         <input
+          id="contact-email"
           name="email"
+          type="email"
+          required
+          maxLength={LIMITS.email}
+          autoComplete="email"
+          aria-invalid={Boolean(errors.email)}
+          aria-describedby={errors.email ? 'contact-email-error' : undefined}
           value={form.email}
           onChange={handleChange}
-          type="email"
-          placeholder="Email Address"
-          className="w-full px-5 sm:px-6 py-4 sm:py-5 min-h-[48px] text-[1.4rem] sm:text-[1.5rem] text-white bg-white/5 rounded-xl border border-white/10 transition-all duration-300 focus:border-indigo-500/50 focus:bg-white/10 focus:outline-none placeholder-gray-500"
+          className={`${baseField} ${errors.email ? 'border-danger' : 'border-line'}`}
         />
-      </div>
+      </Field>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 md:gap-8 mb-5 sm:mb-6 md:mb-8">
+      <Field id="contact-subject" label="Subject" error={errors.subject}>
         <input
+          id="contact-subject"
           name="subject"
+          type="text"
+          required
+          maxLength={LIMITS.subject}
+          aria-invalid={Boolean(errors.subject)}
+          aria-describedby={errors.subject ? 'contact-subject-error' : undefined}
           value={form.subject}
           onChange={handleChange}
-          type="text"
-          placeholder="Subject"
-          className="w-full px-5 sm:px-6 py-4 sm:py-5 min-h-[48px] text-[1.4rem] sm:text-[1.5rem] text-white bg-white/5 rounded-xl border border-white/10 transition-all duration-300 focus:border-indigo-500/50 focus:bg-white/10 focus:outline-none placeholder-gray-500"
+          className={`${baseField} ${errors.subject ? 'border-danger' : 'border-line'}`}
         />
-        {/* Honeypot - hidden from users but bots may fill */}
+      </Field>
+
+      <Field id="contact-message" label="Message" error={errors.message}>
+        <textarea
+          id="contact-message"
+          name="message"
+          rows="6"
+          required
+          maxLength={LIMITS.message}
+          aria-invalid={Boolean(errors.message)}
+          aria-describedby={errors.message ? 'contact-message-error' : undefined}
+          value={form.message}
+          onChange={handleChange}
+          className={`${baseField} resize-y ${errors.message ? 'border-danger' : 'border-line'}`}
+        />
+      </Field>
+
+      {/* Honeypot: hidden from people and screen readers */}
+      <div className="hidden" aria-hidden="true">
+        <label htmlFor="contact-website">Website</label>
         <input
+          id="contact-website"
           name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
           value={form.website}
           onChange={handleChange}
-          type="text"
-          placeholder="Your website"
-          autoComplete="off"
-          className="hidden"
-          aria-hidden="true"
         />
       </div>
-
-      <textarea
-        name="message"
-        value={form.message}
-        onChange={handleChange}
-        rows="6"
-        placeholder="Message"
-        className="w-full px-5 sm:px-6 py-4 sm:py-5 text-[1.4rem] sm:text-[1.5rem] text-white bg-white/5 rounded-xl border border-white/10 transition-all duration-300 focus:border-indigo-500/50 focus:bg-white/10 focus:outline-none resize-none mb-6 sm:mb-8 md:mb-10 placeholder-gray-500"
-      />
 
       <button
         type="submit"
         disabled={sending}
-        className={`w-full px-8 sm:px-10 md:px-12 py-4 sm:py-4.5 md:py-5 min-h-[52px] rounded-xl text-[1.4rem] sm:text-[1.5rem] md:text-[1.6rem] text-white font-[600] cursor-pointer transition-all duration-300 flex items-center justify-center gap-2 sm:gap-3 ${sending ? 'bg-indigo-400/60' : 'bg-gradient-to-r from-indigo-500 to-purple-600 hover:shadow-2xl hover:shadow-indigo-500/50 hover:scale-[1.02] active:scale-95'}`}>
-        <span>{sending ? 'Sending...' : 'Send Message'}</span>
-        <FiSend className={`w-4 h-4 sm:w-5 sm:h-5 ${sending ? 'animate-spin' : ''}`} />
+        className="min-h-[44px] px-5 rounded-md bg-accent text-on-accent font-semibold cursor-pointer hover:opacity-90 disabled:opacity-60"
+      >
+        {sending ? 'Sending...' : 'Send message'}
       </button>
 
-      {/* Toast notification */}
-      {toast.show && (
-        <div className={`fixed right-6 bottom-6 z-50 max-w-sm w-full p-4 rounded-lg text-white ${toast.type === 'success' ? 'bg-emerald-500' : 'bg-rose-500'} shadow-lg`}> 
-          {toast.message}
-        </div>
+      {submitError && (
+        <p role="alert" aria-live="assertive" className="text-danger text-[0.9375rem]">
+          {submitError}
+        </p>
       )}
     </form>
   );
 };
+
+const Contact = () => (
+  <section id="contact" aria-labelledby="contact-title" className="border-t border-line">
+    <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
+      <h2 id="contact-title">Contact</h2>
+
+      <dl className="mt-6 m-0 max-w-[65ch] border-b border-line">
+        <div className="grid sm:grid-cols-[10rem_1fr] gap-1 sm:gap-6 py-3 border-t border-line">
+          <dt className="text-muted text-[0.9375rem]">Direct email</dt>
+          <dd className="m-0">
+            {isPlaceholder(site.email) ? (
+              <Val v={site.email} />
+            ) : (
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            )}
+          </dd>
+        </div>
+        <div className="grid sm:grid-cols-[10rem_1fr] gap-1 sm:gap-6 py-3 border-t border-line">
+          <dt className="text-muted text-[0.9375rem]">Response time</dt>
+          <dd className="m-0"><Val v={site.responseTime} /></dd>
+        </div>
+        <div className="grid sm:grid-cols-[10rem_1fr] gap-1 sm:gap-6 py-3 border-t border-line">
+          <dt className="text-muted text-[0.9375rem]">Location</dt>
+          <dd className="m-0">{site.location}</dd>
+        </div>
+      </dl>
+
+      <h3 className="mt-12 text-[1.25rem]">Send a message</h3>
+      <ContactForm />
+    </div>
+  </section>
+);
+
+export default Contact;

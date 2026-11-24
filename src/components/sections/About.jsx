@@ -1,121 +1,58 @@
-import { useState, useEffect } from 'react';
-// eslint-disable-next-line no-unused-vars
-import { motion } from 'framer-motion';
-import { Rocket } from 'lucide-react';
-import { fadeUpVariants, slideLeftVariants, slideRightVariants, staggerContainerVariants, staggerItemVariants } from '../../utils/animationVariants';
-import SkeletonLoader from '../SkeletonLoader';
+import { site } from '../../data/siteConfig';
+import { publishedProjects } from '../../data/projectsData';
+import { Link } from '../../router';
+import Val from '../Val';
 
-const About = () => {
-  const [loading, setLoading] = useState(true);
+const timeline = [
+  { when: '2024', what: 'Started BSc in Computer Science at the University of Ghana, Legon.' },
+  {
+    when: '2025',
+    what: 'Built the Sanich Farms e-commerce platform and completed an IT internship at the Food and Drugs Authority.',
+  },
+  {
+    when: '2026',
+    what: 'Building full-stack web apps and APIs, and exploring AI agents and Kubernetes.',
+  },
+];
 
-  // Simulate loading delay
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
+const sanich = publishedProjects.find((p) => p.slug === 'sanich-farms');
 
-  return (
-    <section 
-      id="about" 
-      className="min-h-screen bg-gradient-to-b from-[#0b0b1a] via-[#1a1a2e] to-[#0b0b1a] px-[5%] sm:px-[7%] md:px-[9%] py-12 md:py-16 relative overflow-hidden"
-    >
-      <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[120px]"></div>
-      
-      <motion.h2 
-        className="text-center text-[3rem] sm:text-[3.5rem] md:text-[4.5rem] font-[800] mb-8 md:mb-12"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={fadeUpVariants}
-      >
-        About <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Me</span>
-      </motion.h2>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center w-full">
-        <motion.div 
-          className="hidden lg:flex justify-center lg:justify-start"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={slideLeftVariants}
-        >
-          <div className="relative w-[400px] h-[500px] md:w-[450px] md:h-[550px]">
-            {/* Glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/30 to-purple-600/30 rounded-[2rem] blur-2xl"></div>
-            
-            {/* Icon container */}
-            <div className="relative w-full h-full rounded-[2rem] bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-transparent backdrop-blur-sm border border-white/10 overflow-hidden group shadow-[0_20px_60px_rgba(99,102,241,0.3)]">
-              <div className="w-full h-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
-                <Rocket className="w-40 h-40 text-indigo-400" />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-indigo-600/20 to-transparent"></div>
-            </div>
-          </div>
-        </motion.div>
-        
-        <motion.div 
-          className="max-w-[60rem] px-4 sm:px-0"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={slideRightVariants}
-        >
+const About = () => (
+  <section id="about" aria-labelledby="about-title" className="border-t border-line">
+    <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
+      <h2 id="about-title">About</h2>
 
-          <h3 className="text-[2rem] sm:text-[2.4rem] md:text-[2.8rem] mb-4 sm:mb-5 md:mb-6 font-[700] bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Full Stack Developer & Software Engineer</h3>
-          <p className="text-[1.4rem] sm:text-[1.5rem] md:text-[1.6rem] leading-[1.8] sm:leading-[1.85] md:leading-[1.9] mb-4 sm:mb-5 md:mb-6 text-gray-400">
-            My journey in software engineering led me to discover my true passion: Full Stack development. I've transitioned from a general software engineer to a specialist who thrives on building end-to-end scalable applications. There's something deeply satisfying about architecting a complete solution—from database design to the final pixel on screen—ensuring every layer works harmoniously to deliver exceptional user experiences.
-          </p>
-          <p className="text-[1.4rem] sm:text-[1.5rem] md:text-[1.6rem] leading-[1.8] sm:leading-[1.85] md:leading-[1.9] mb-4 sm:mb-5 md:mb-6 text-gray-400">
-            I don't just write code—I architect user-centric solutions. My problem-solving mindset drives me to look beyond immediate requirements and understand the bigger picture. Whether it's optimizing database queries for performance, designing intuitive APIs, or crafting responsive interfaces, I approach every challenge with the end user in mind, ensuring that technical excellence translates into meaningful value.
-          </p>
-
-          
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-10 md:mt-12">
-              <SkeletonLoader variant="stats" count={3} />
-            </div>
+      <div className="mt-8 max-w-[65ch] space-y-4">
+        <p>
+          I am a full-stack developer in {site.location}. I built the{' '}
+          {sanich ? (
+            <Link to={`/projects/${sanich.slug}`}>Sanich Farms online store</Link>
           ) : (
-            <motion.div 
-              className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-10 md:mt-12"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={staggerContainerVariants}
-            >
-            <motion.div 
-              variants={staggerItemVariants}
-              className="text-center p-5 sm:p-6 rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/30 transition-all duration-300 hover:transform hover:-translate-y-1"
-            >
-              <h4 className="text-[2.8rem] sm:text-[3rem] md:text-[3.5rem] font-[800] bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent mb-1 sm:mb-2">3+</h4>
-              <span className="text-[1.2rem] sm:text-[1.3rem] text-gray-400 font-[500] block">Years Experience</span>
-            </motion.div>
-            <motion.div 
-              variants={staggerItemVariants}
-              className="text-center p-5 sm:p-6 rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/30 transition-all duration-300 hover:transform hover:-translate-y-1"
-            >
-              <h4 className="text-[2.8rem] sm:text-[3rem] md:text-[3.5rem] font-[800] bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent mb-1 sm:mb-2">50+</h4>
-              <span className="text-[1.2rem] sm:text-[1.3rem] text-gray-400 font-[500] block">Projects Completed</span>
-            </motion.div>
-            <motion.div 
-              variants={staggerItemVariants}
-              className="text-center p-5 sm:p-6 rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-indigo-500/30 transition-all duration-300 hover:transform hover:-translate-y-1"
-            >
-              <h4 className="text-[2.8rem] sm:text-[3rem] md:text-[3.5rem] font-[800] bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent mb-1 sm:mb-2">30+</h4>
-              <span className="text-[1.2rem] sm:text-[1.3rem] text-gray-400 font-[500] block">Happy Clients</span>
-            </motion.div>
-          </motion.div>
-          )}
-          
-          <a href="#contact" 
-             className="block mt-8 sm:mt-10 md:mt-12 px-8 sm:px-10 py-3.5 sm:py-4 min-h-[48px] bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl text-[1.4rem] sm:text-[1.5rem] text-white font-[600] transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/50 hover:scale-105 active:scale-95 text-center">
-            Let's Connect
-          </a>
-        </motion.div>
+            'Sanich Farms online store'
+          )}{' '}
+          with React, Node.js and MongoDB.
+        </p>
+        <p>
+          <Val v="[PLACEHOLDER: one specific thing you learned while building it]" />
+        </p>
+        <p>
+          I am looking for remote roles, international teams, and open-source collaboration.
+        </p>
+        <p>
+          <Val v={site.experience} />
+        </p>
       </div>
-    </section>
-  );
-};
+
+      <ol className="mt-12 m-0 p-0 list-none max-w-[65ch] border-b border-line" aria-label="My path">
+        {timeline.map((t, i) => (
+          <li key={i} className="grid sm:grid-cols-[8rem_1fr] gap-1 sm:gap-6 py-3 border-t border-line">
+            <span className="text-muted text-[0.9375rem]"><Val v={t.when} /></span>
+            <span><Val v={t.what} /></span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+);
 
 export default About;

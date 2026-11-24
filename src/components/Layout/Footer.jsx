@@ -1,44 +1,28 @@
-import { FiGithub, FiLinkedin, FiTwitter } from 'react-icons/fi';
+import { site } from '../../data/siteConfig';
+import { hasNowContent } from '../../data/hiringData';
+import { Link } from '../../router';
+import SocialLinks from '../SocialLinks';
 
-const Footer = () => {
-  return (
-    <footer className="bg-[#0b0b1a] px-[5%] sm:px-[7%] md:px-[9%] py-8 sm:py-10 md:py-12 border-t border-white/[0.04]">
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-8">
-        <p className="text-[1.3rem] sm:text-[1.4rem] text-gray-400 text-center sm:text-left">
-          © 2026 <span className="text-indigo-400 font-[600]">Dex</span>. Crafted with passion.
-        </p>
-        <div className="flex gap-3 sm:gap-4">
-          <a 
-            href="https://github.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex justify-center items-center min-w-[44px] min-h-[44px] w-[4rem] h-[4rem] bg-white/5 border border-white/10 rounded-xl text-gray-400 transition-all duration-300 hover:bg-indigo-500/20 hover:text-indigo-400 hover:border-indigo-500/30 hover:-translate-y-1 active:scale-95"
-            aria-label="GitHub"
-          >
-            <FiGithub className="w-5 h-5" />
-          </a>
-          <a 
-            href="https://linkedin.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex justify-center items-center min-w-[44px] min-h-[44px] w-[4rem] h-[4rem] bg-white/5 border border-white/10 rounded-xl text-gray-400 transition-all duration-300 hover:bg-indigo-500/20 hover:text-indigo-400 hover:border-indigo-500/30 hover:-translate-y-1 active:scale-95"
-            aria-label="LinkedIn"
-          >
-            <FiLinkedin className="w-5 h-5" />
-          </a>
-          <a 
-            href="https://twitter.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex justify-center items-center min-w-[44px] min-h-[44px] w-[4rem] h-[4rem] bg-white/5 border border-white/10 rounded-xl text-gray-400 transition-all duration-300 hover:bg-indigo-500/20 hover:text-indigo-400 hover:border-indigo-500/30 hover:-translate-y-1 active:scale-95"
-            aria-label="Twitter"
-          >
-            <FiTwitter className="w-5 h-5" />
-          </a>
-        </div>
+const Footer = () => (
+  <footer className="no-print border-t border-line">
+    <div className="mx-auto max-w-4xl px-6 py-10 flex flex-col gap-6 text-[0.9375rem] text-muted">
+      <nav aria-label="Footer sections">
+        <ul className="m-0 p-0 list-none flex flex-wrap gap-x-6 gap-y-1">
+          <li><Link to="/#services" className="inline-flex items-center min-h-[44px] no-underline hover:underline">Services</Link></li>
+          <li><Link to="/#skills" className="inline-flex items-center min-h-[44px] no-underline hover:underline">Skills</Link></li>
+          {hasNowContent && (
+            <li><Link to="/#now" className="inline-flex items-center min-h-[44px] no-underline hover:underline">Now</Link></li>
+          )}
+          <li><Link to="/projects" className="inline-flex items-center min-h-[44px] no-underline hover:underline">All projects</Link></li>
+          <li><Link to="/cv" className="inline-flex items-center min-h-[44px] no-underline hover:underline">Printable CV</Link></li>
+        </ul>
+      </nav>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <p>&copy; {new Date().getFullYear()} {site.name}</p>
+        <SocialLinks />
       </div>
-    </footer>
-  );
-};
+    </div>
+  </footer>
+);
 
 export default Footer;
